@@ -10,9 +10,10 @@ import { Label } from "./label";
 interface CheckboxProps
   extends React.ComponentProps<typeof CheckboxPrimitive.Root> {
   label?: string;
+  description?: string;
 }
 
-function Checkbox({ className, label, ...props }: CheckboxProps) {
+function Checkbox({ className, label,description, ...props }: CheckboxProps) {
   return (
     <label className="inline-flex items-center gap-2 cursor-pointer">
       <CheckboxPrimitive.Root
@@ -30,7 +31,10 @@ function Checkbox({ className, label, ...props }: CheckboxProps) {
           <CheckIcon className="h-4 w-4" />
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>
+      <div>
       {label && <Label className="leading-none mt-2">{label}</Label>}
+      {description && (<p className="text-sm text-muted-foreground mt-1">{description}</p>)}
+      </div>
     </label>
   );
 }

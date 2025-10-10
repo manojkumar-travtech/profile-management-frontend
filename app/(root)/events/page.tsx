@@ -1,13 +1,14 @@
-import ExternalSubmitExample from '@/components/custom/Form/ExternalSubmitExample'
-import React from 'react'
-import CreateEvent from './_components/CreateEvent'
+import React from "react";
+import CreateEvent from "./_components/CreateEvent";
+import CreateEventDemo from "./_components/CreateEventDemo";
 
 const EventHomePage = () => {
   return (
-    <div>
-      <CreateEvent />
-    </div>
-  )
-}
+    <>
+      <CreateEventDemo />
+      {/* <CreateEvent /> */}
+    </>
+  );
+};
 
-export default EventHomePage
+export default EventHomePage;

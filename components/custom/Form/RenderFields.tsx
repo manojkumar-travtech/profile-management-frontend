@@ -6,7 +6,7 @@ import {
   getLayoutClasses,
   getValidationRules,
 } from "./FormHelper";
-import renderInput from "./RenderFormFields";
+import RenderFormFields from "./RenderFormFields";
 import { RenderFieldsProps } from "./Formtypes.types";
 import { Label } from "@/components/ui/label";
 
@@ -75,7 +75,7 @@ export const renderFields = <T extends FieldValues>({
                         fieldState: formState,
                         field: { ...field },
                       })
-                    : renderInput(
+                    : RenderFormFields(
                         field,
                         value,
                         onChange,

@@ -36,7 +36,7 @@ export function DynamicForm<T extends FieldValues>({
   const [collapsedSections, setCollapsedSections] = useState<Set<number>>(
     new Set()
   );
-  const isMobile = useIsMobile();
+  const isMobile = useIsMobile(480);
   const {
     control,
     handleSubmit,
@@ -60,7 +60,7 @@ export function DynamicForm<T extends FieldValues>({
   };
 
   const handleFormSubmit: SubmitHandler<T> = (data) => {
-    onSubmit(data);
+    onSubmit?.(data);
   };
 
   const handleFormError: SubmitErrorHandler<T> = (formErrors) => {
@@ -179,7 +179,7 @@ export function DynamicForm<T extends FieldValues>({
                       layout,
                       variant,
                       isMobile,
-                      watch
+                      watch,
                     })
                   : null}
               </div>
@@ -196,7 +196,7 @@ export function DynamicForm<T extends FieldValues>({
             layout,
             variant,
             isMobile,
-            watch
+            watch,
           })
         )}
 

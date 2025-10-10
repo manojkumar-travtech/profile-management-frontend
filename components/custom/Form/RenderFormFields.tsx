@@ -21,6 +21,10 @@ import { cn } from "@/lib/utils";
 import { MultiSelectDropdown } from "../MultiSelect";
 import SingleSelect from "../SingleSelect/SingleSelect";
 import FormRadioGroup from "../FormRadioGroup/FormRadioGroup";
+import { FormCalendar } from "../DatePicker/FormCalendar";
+import { FormDateRangeCalendar } from "../DatePicker/FormDateRangeCalendar";
+import { TimePicker } from "../TimePicker";
+import { DragAndDropUploader } from "../DragAndDropUploader";
 
 export function RenderFormFields<T extends FieldValues>(
   field: FormFieldProps<T>,
@@ -36,7 +40,6 @@ export function RenderFormFields<T extends FieldValues>(
   const fieldError = getFieldError(errors, field.name as Path<T>);
   const isDisabled = field.disabled || disabled;
   const hasError = !!fieldError;
-
   // Common props for form controls
   const commonProps = {
     disabled: isDisabled,
@@ -51,7 +54,6 @@ export function RenderFormFields<T extends FieldValues>(
     case "text":
     case "email":
     case "number":
-    case "date":
     case "datetime-local":
     case "tel":
     case "url":
@@ -72,7 +74,6 @@ export function RenderFormFields<T extends FieldValues>(
             {...commonProps}
             type={field.type}
             placeholder={field.placeholder}
-            step={field.step}
             value={value ?? ""}
             className={cn(
               commonProps.className,
@@ -179,7 +180,8 @@ export function RenderFormFields<T extends FieldValues>(
       return (
         <div className="flex items-start space-x-3">
           <Checkbox
-            label={field.label}
+            label={field?.label}
+            description={field?.description}
             id={`checkbox-${field.name}`}
             disabled={isDisabled}
             checked={Boolean(value)}
@@ -213,24 +215,36 @@ export function RenderFormFields<T extends FieldValues>(
 
     case "file":
       return (
-        <Input
-          type="file"
-          disabled={isDisabled}
-          accept={field.accept}
-          multiple={field.multiple}
-          className={cn(
-            commonProps.className,
-            "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground"
+        <div className="space-y-2">
+          <DragAndDropUploader
+            label={field.label || "Upload file(s)"}
+            multiple={field.multiple}
+            accept={
+              field.accept
+                ? { [field.accept]: [] } // convert accept string to record
+                : undefined
+            }
+            value={
+              Array.isArray(value)
+                ? (value as File[])
+                : value
+                ? [value as File]
+                : []
+            }
+            onFilesChange={(files) => {
+              onChange(
+                field.multiple
+                  ? (files as PathValue<T, Path<T>>)
+                  : ((files?.[0] || null) as PathValue<T, Path<T>>)
+              );
+            }}
+            readFile={false} // or true if you want to read the content
+          />
+
+          {field.helpText && (
+            <p className="text-xs text-gray-500">{field.helpText}</p>
           )}
-          onChange={(e) => {
-            const files = e.target.files;
-            onChange(
-              field.multiple
-                ? (Array.from(files || []) as PathValue<T, Path<T>>)
-                : ((files?.[0] || null) as PathValue<T, Path<T>>)
-            );
-          }}
-        />
+        </div>
       );
 
     case "range":
@@ -265,7 +279,97 @@ export function RenderFormFields<T extends FieldValues>(
           onChange={(e) => onChange(e.target.value as PathValue<T, Path<T>>)}
         />
       );
-
+    case "date":
+      return (
+        <FormCalendar
+          value={value ? new Date(value as string) : undefined}
+          onChange={(date) => {
+            // Convert date to string format for form handling
+            onChange(
+              date
+                ? (date.toISOString().split("T")[0] as PathValue<T, Path<T>>)
+                : ("" as PathValue<T, Path<T>>)
+            );
+          }}
+          field={field}
+          disabled={isDisabled}
+          hasError={hasError}
+        />
+      );
+    case "daterange":
+      return (
+        <FormDateRangeCalendar
+          value={
+            value as
+              | { from: Date | undefined; to: Date | undefined }
+              | undefined
+          }
+          onChange={(range) => onChange(range as PathValue<T, Path<T>>)}
+          field={field}
+          disabled={isDisabled}
+          hasError={hasError}
+        />
+      );
+    case "datetime":
+      return (
+        <div className="space-y-2">
+          <FormCalendar
+            value={value ? new Date(value as string) : undefined}
+            onChange={(date) => {
+              if (date) {
+                // Preserve existing time if available
+                const existingDate = value
+                  ? new Date(value as string)
+                  : new Date();
+                date.setHours(
+                  existingDate.getHours(),
+                  existingDate.getMinutes()
+                );
+                onChange(date.toISOString() as PathValue<T, Path<T>>);
+              } else {
+                onChange("" as PathValue<T, Path<T>>);
+              }
+            }}
+            field={field}
+            disabled={isDisabled}
+            hasError={hasError}
+          />
+          {value && (
+            <Input
+              type="time"
+              value={
+                value
+                  ? new Date(value as string).toTimeString().slice(0, 5)
+                  : ""
+              }
+              onChange={(e) => {
+                if (value) {
+                  const date = new Date(value as string);
+                  const [hours, minutes] = e.target.value.split(":");
+                  date.setHours(parseInt(hours), parseInt(minutes));
+                  onChange(date.toISOString() as PathValue<T, Path<T>>);
+                }
+              }}
+              disabled={isDisabled}
+              className={commonProps.className}
+            />
+          )}
+        </div>
+      );
+    case "time":
+      return (
+        <TimePicker
+          value={value}
+          onChange={(val) => onChange(val as PathValue<T, Path<T>>)}
+          placeholder={field.placeholder || "Select time"}
+          disabled={isDisabled}
+          readOnly={field.readonly}
+          hasError={hasError}
+          timeConfig={field.timeConfig}
+          className={commonProps.className}
+          errorMessage={fieldError?.message as string}
+        />
+      );
     case "custom":
     default:
       return null;

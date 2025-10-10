@@ -9,6 +9,7 @@ import {
 } from "react-hook-form";
 
 import {
+  CalendarFieldConfig,
   FormFieldProps,
   FormLayout,
   FormSize,
@@ -152,3 +153,4 @@ export const getValidationRules = <T extends FieldValues>(
 
   return rules;
 };
+

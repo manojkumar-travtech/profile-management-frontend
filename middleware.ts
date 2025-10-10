@@ -5,20 +5,20 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("access_token")?.value;
 
-  const publicPaths = ["/signin", "/signup"];
-  const isPublic = publicPaths.some((path) =>
-    req.nextUrl.pathname.startsWith(path)
-  );
+  // const publicPaths = ["/signin", "/signup"];
+  // const isPublic = publicPaths.some((path) =>
+  //   req.nextUrl.pathname.startsWith(path)
+  // );
 
-  if (isPublic && token) {
-    // ✅ logged in user should not see signin/signup
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+  // if (isPublic && token) {
+  //   // ✅ logged in user should not see signin/signup
+  //   return NextResponse.redirect(new URL("/", req.url));
+  // }
 
-  if (!isPublic && !token) {
-    // ✅ no token → protect route
-    return NextResponse.redirect(new URL("/signin", req.url));
-  }
+  // if (!isPublic && !token) {
+  //   // ✅ no token → protect route
+  //   return NextResponse.redirect(new URL("/signin", req.url));
+  // }
 
   return NextResponse.next();
 }

@@ -1,9 +1,10 @@
-export const createEventConfig = {
-  title: "Create Event",
-  description: "Fill in the details below to create the event.",
-  showProgress: false,
+import { FormConfig } from "@/components/custom/Form";
+
+export const createEventConfig: FormConfig<any> = {
+  title: "",
+  description: "",
   fullWidthButtons: true,
-  gridCols: 2, // 2-column grid
+  gridCols: 4,
   sections: [
     {
       title: "",
@@ -12,7 +13,7 @@ export const createEventConfig = {
         {
           name: "company",
           label: "Company",
-          type: "select", // dropdown
+          type: "select",
           placeholder: "Choose company",
           options: [
             { label: "ABC Corp", value: "abc_corp" },
@@ -24,12 +25,12 @@ export const createEventConfig = {
         {
           name: "clientCompany",
           label: "Client Company",
-          type: "multiselect", // dropdown
+          type: "select",
           placeholder: "Choose company",
           options: [
-            { label: "Client A", value: "client_a" },
-            { label: "Client B", value: "client_b" },
-            { label: "Client C", value: "client_c" },
+            { label: "Client A Client A", value: "client_a" },
+            { label: "Client B Client A", value: "client_b" },
+            { label: "Client C Client A", value: "client_c" },
           ],
         },
       ],
@@ -61,12 +62,6 @@ export const createEventConfig = {
             { label: "Frank Moore", value: "frank_moore" },
           ],
         },
-        {
-          name: "sendAllRequestsToCoordinator",
-          label: "Send All Requests to Event Coordinator",
-          type: "checkbox",
-          colSpan: 2,
-        },
       ],
     },
     {
@@ -78,7 +73,7 @@ export const createEventConfig = {
           label: "Event Name",
           type: "text",
           placeholder: "Event Name",
-          colSpan: 2,
+          colSpan: 1,
           validation: { required: "Event Name is required" },
         },
         {
@@ -86,6 +81,12 @@ export const createEventConfig = {
           label: "Event Start Date",
           type: "date",
           validation: { required: "Start Date is required" },
+          calendar: {
+            datePreset: "futureOnly",
+            minDate: new Date(),
+            maxDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            closeOnSelect: true,
+          },
         },
         {
           name: "eventEndDate",
@@ -97,12 +98,19 @@ export const createEventConfig = {
           name: "startTime",
           label: "Start Time",
           type: "time",
+          validation: { required: "Start Time is required" },
+        },
+        {
+          name: "endTime",
+          label: "End Time",
+          type: "time",
         },
         {
           name: "airportCode",
           label: "Airport Code",
           type: "select",
           placeholder: "Choose the airport code",
+          colSpan: 2,
           options: [
             { label: "JFK", value: "JFK" },
             { label: "LAX", value: "LAX" },
@@ -126,18 +134,29 @@ export const createEventConfig = {
           name: "earliestDepartureDate",
           label: "Earliest Departure Date",
           type: "date",
+          calendar: {
+            datePreset: "futureOnly",
+            minDate: new Date(),
+            maxDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            closeOnSelect: true,
+          },
         },
         {
           name: "latestReturnDate",
           label: "Latest Return Date",
           type: "date",
+          calendar: {
+            datePreset: "futureOnly",
+            minDate: new Date(),
+            maxDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+            closeOnSelect: true,
+          },
         },
         {
           name: "airlinesToAvoid",
           label: "Airlines To Avoid",
           type: "select",
           placeholder: "Select...",
-          multiple: true,
           options: [
             { label: "Delta", value: "delta" },
             { label: "American Airlines", value: "aa" },
@@ -149,26 +168,24 @@ export const createEventConfig = {
   ],
 };
 
-export const additionalFormConfig = {
-  title: "Event Settings",
-  description: "Configure additional event settings and preferences.",
-  showProgress: false,
+export const additionalFormConfig: FormConfig<any> = {
   fullWidthButtons: true,
   gridCols: 2,
   sections: [
     {
-      title: "Communication Settings",
+      title: "Media Upload",
       collapsible: false,
       fields: [
         {
-          name: "emailNotifications",
-          label: "Email Notifications",
-          type: "checkbox",
+          name: "eventBanner",
+          label: "Event Banner",
+          type: "file",
+          validation: { required: "Event Banner is required" },
         },
         {
-          name: "smsNotifications",
-          label: "SMS Notifications",
-          type: "checkbox",
+          name: "customerLogo",
+          label: "Customer Logo",
+          type: "textarea",
         },
         {
           name: "reminderDays",
@@ -195,14 +212,14 @@ export const additionalFormConfig = {
           ],
           conditional: {
             field: "reminderDays",
-            value: ["1", "3", "7", "14"],
+            value: ["1", "3", "7"],
           },
           validation: { required: "reminderTime is required" },
         },
         {
           name: "maxAttendees",
           label: "Maximum Attendees",
-          type: "text",
+          type: "number",
           placeholder: "Enter number",
         },
       ],
