@@ -8,31 +8,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonProps } from "@/components/ui/button";
 import { Typography } from "@/components/custom/Typography";
 
 interface CreateEventPanelProps {
-  triggerText: string;
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  triggerButtonProps?: ButtonProps;
+  isOpen?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export const CreateEventPanel: React.FC<CreateEventPanelProps> = ({
-  triggerText,
+  triggerButtonProps,
   title,
   children,
   footer,
+  isOpen,
+  onOpenChange,
 }) => {
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button>{triggerText}</Button>
+        <Button
+          {...(triggerButtonProps as React.ComponentProps<typeof Button>)}
+        />
       </DialogTrigger>
 
       <DialogContent
         style={{ maxWidth: "none", padding: 0 }}
-        className="max-w-none w-[95vw] h-[95vh] overflow-hidden flex flex-col"
+        className="max-w-none w-[95vw] h-[97vh] overflow-hidden flex flex-col"
       >
         <DialogHeader className="flex-shrink-0 border-b p-4">
           <DialogTitle asChild>

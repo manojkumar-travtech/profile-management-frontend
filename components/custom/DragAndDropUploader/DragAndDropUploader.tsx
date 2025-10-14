@@ -21,6 +21,7 @@ interface DragAndDropUploaderProps {
   multiple?: boolean;
   accept?: Record<string, string[]>;
   readFile?: boolean;
+  variant?: "compact" | "full"; // NEW PROP
 }
 
 const getFileIcon = (fileType: string) => {
@@ -69,6 +70,7 @@ const DragAndDropUploader: React.FC<DragAndDropUploaderProps> = ({
   multiple = true,
   accept,
   readFile = false,
+  variant = 'full'
 }) => {
   const [files, setFiles] = useState<File[]>(value);
   const [loading, setLoading] = useState(false);
@@ -127,6 +129,21 @@ const DragAndDropUploader: React.FC<DragAndDropUploaderProps> = ({
   };
 
   const acceptedTypes = getAcceptedTypesDisplay(accept);
+
+  if (variant === "compact") {
+    return (
+      <div {...getRootProps()} className="w-full border border-gray-300 rounded-lg p-3 cursor-pointer flex items-center justify-between hover:border-purple-500 transition-all">
+        <input {...getInputProps()} />
+        <span>{label}</span>
+        <button
+          type="button"
+          className="px-3 py-1 bg-gray-100 rounded hover:bg-gray-200"
+        >
+          Browse Photo
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

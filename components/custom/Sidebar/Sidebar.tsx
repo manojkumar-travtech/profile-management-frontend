@@ -2,37 +2,20 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import {
-  Star,
-  Users,
-  CreditCard,
-  BarChart3,
-  ChevronDown,
-  ChevronRight,
-  Send,
-  Menu,
-  X,
-  PanelLeftClose,
-  PanelLeftOpen,
-} from "lucide-react";
-import { Typography } from "../Typography";
+import { Menu } from "lucide-react";
 import { Header } from "../Header";
 import SidebarHeader from "./SidebarHeader";
-import { MENU_ITEMS, MenuItemComponentProps, SidebarProps } from "./MenuItems";
+import { MenuItem, SidebarNavigationProps, SidebarProps } from "./MenuItems";
 import SidebarFooter from "./SidebarFooter";
 import MenuItemComponent from "./MenuItemComponent";
-
-// Types
-
 
 // Constants
 const SIDEBAR_WIDTH_EXPANDED = "w-80";
 const SIDEBAR_WIDTH_COLLAPSED = "w-16";
 const SIDEBAR_WIDTH_MOBILE = "w-80";
 
-
 // Custom hooks
-const useActiveMenu = (pathname: string) => {
+const useActiveMenu = (pathname: string, MENU_ITEMS: MenuItem[]) => {
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
 
   useEffect(() => {
@@ -46,21 +29,21 @@ const useActiveMenu = (pathname: string) => {
   return { openSubmenu, setOpenSubmenu };
 };
 
-
-const SidebarNavigation: React.FC<{
-  pathname: string;
-  openSubmenu: string | null;
-  isCollapsed: boolean;
-  onToggleSubmenu: (itemId: string) => void;
-  onNavigate: (path: string) => void;
-}> = ({ pathname, openSubmenu, isCollapsed, onToggleSubmenu, onNavigate }) => (
+const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
+  pathname,
+  openSubmenu,
+  isCollapsed,
+  onToggleSubmenu,
+  onNavigate,
+  MENU_ITEMS,
+}) => (
   <nav
     className={`flex-1 py-4 transition-all duration-300 ${
       isCollapsed ? "px-2" : "px-6"
     }`}
   >
     <ul className="space-y-2">
-      {MENU_ITEMS.map((item) => {
+      {(MENU_ITEMS || []).map((item) => {
         const isOpen = openSubmenu === item.id && !isCollapsed;
         const isActive = item.path
           ? pathname === item.path
@@ -110,12 +93,12 @@ const MobileOverlay: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
 );
 
 // Main Sidebar Component
-export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ children, MENU_ITEMS }) => {
   const router = useRouter();
   const pathname = usePathname() || "/";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const { openSubmenu, setOpenSubmenu } = useActiveMenu(pathname);
+  const { openSubmenu, setOpenSubmenu } = useActiveMenu(pathname, MENU_ITEMS || []);
 
   useEffect(() => {
     if (isCollapsed) setOpenSubmenu(null);
@@ -159,12 +142,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
       />
+      
       <SidebarNavigation
         pathname={pathname}
         openSubmenu={openSubmenu}
         isCollapsed={isCollapsed}
         onToggleSubmenu={handleToggleSubmenu}
         onNavigate={handleNavigate}
+        MENU_ITEMS={MENU_ITEMS}
       />
       <SidebarFooter isCollapsed={isCollapsed} />
     </div>
@@ -183,6 +168,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children }) => {
         isCollapsed={false}
         onToggleSubmenu={handleToggleSubmenu}
         onNavigate={handleNavigate}
+        MENU_ITEMS={MENU_ITEMS}
       />
       <SidebarFooter isCollapsed={false} />
     </div>

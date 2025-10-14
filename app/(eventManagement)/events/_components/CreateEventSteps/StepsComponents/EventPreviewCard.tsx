@@ -1,6 +1,18 @@
 import { Calendar, Clock, MapPin } from "lucide-react";
+import { EventPreviewCardProps } from "../StepsJson";
 
-const EventPreviewCard = ({ formData }: { formData: any }) => {
+const EventPreviewCard = ({ formData }: EventPreviewCardProps) => {
+  const {
+    aboutEvent,
+    eventName,
+    eventStartDate,
+    eventEndDate,
+    startTime,
+    endTime,
+    venueName,
+    venueCompleteAddress,
+  } = formData;
+
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "TBD";
     const date = new Date(dateStr);
@@ -55,22 +67,22 @@ const EventPreviewCard = ({ formData }: { formData: any }) => {
       {/* Event name */}
       <div className="text-center mb-4">
         <h2 className="text-xl font-bold text-purple-600 mb-2">
-          [{formData.eventName || "Event Name"}]
+          [{eventName || "Event Name"}]
         </h2>
 
         {/* Date and time */}
         <div className="flex items-center justify-center text-gray-600 mb-1">
           <Calendar className="w-4 h-4 mr-1" />
           <span className="text-sm">
-            {formatDate(formData.eventStartDate)} -{" "}
-            {formatDate(formData.eventEndDate)}
+            {formatDate(eventStartDate || "")} -{" "}
+            {formatDate(eventEndDate || "")}
           </span>
         </div>
 
-        {formData.startTime && (
+        {startTime && (
           <div className="flex items-center justify-center text-gray-600 mb-3">
             <Clock className="w-4 h-4 mr-1" />
-            <span className="text-sm">{formatTime(formData.startTime)}</span>
+            <span className="text-sm">{formatTime(startTime)}</span>
           </div>
         )}
       </div>
@@ -80,7 +92,7 @@ const EventPreviewCard = ({ formData }: { formData: any }) => {
         <div className="flex items-center justify-center text-gray-700 mb-4">
           <MapPin className="w-4 h-4 mr-1" />
           <span className="text-sm font-medium">
-            [{formData.address || "Address/Venue"}]
+            [{formData.venueCompleteAddress || "Address/Venue"}]
           </span>
         </div>
       </div>

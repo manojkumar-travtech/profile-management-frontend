@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, { useEffect, useImperativeHandle, useState } from "react";
 import {
   DefaultValues,
   FieldValues,
-  get,
   SubmitErrorHandler,
   SubmitHandler,
   useForm,
@@ -33,14 +32,20 @@ export function DynamicForm<T extends FieldValues>({
   ref,
   onChange,
 }: DynamicFormProps<T>) {
-  const [collapsedSections, setCollapsedSections] = useState<Set<number>>(
-    new Set()
-  );
-  const isMobile = useIsMobile(480);
+  const [collapsedSections, setCollapsedSections] = useState<Set<number>>(new Set());
+
+  // ✅ Use your existing hook twice for breakpoints
+  const isMobile480 = useIsMobile(480);
+  const isMobile780 = useIsMobile(780);
+
+  // Derived screen modes
+  const isMobile = isMobile480; // <480px
+  const isTablet = !isMobile480 && isMobile780; // 480–780px
+
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty, isValid, isSubmitting },
+    formState: { errors, isSubmitting, isValid },
     reset,
     watch,
     getValues,
@@ -51,11 +56,8 @@ export function DynamicForm<T extends FieldValues>({
 
   const toggleSection = (index: number) => {
     const newCollapsed = new Set(collapsedSections);
-    if (newCollapsed.has(index)) {
-      newCollapsed.delete(index);
-    } else {
-      newCollapsed.add(index);
-    }
+    if (newCollapsed.has(index)) newCollapsed.delete(index);
+    else newCollapsed.add(index);
     setCollapsedSections(newCollapsed);
   };
 
@@ -64,7 +66,7 @@ export function DynamicForm<T extends FieldValues>({
   };
 
   const handleFormError: SubmitErrorHandler<T> = (formErrors) => {
-    if (onError) onError(formErrors);
+    onError?.(formErrors);
   };
 
   useEffect(() => {
@@ -92,17 +94,43 @@ export function DynamicForm<T extends FieldValues>({
         }),
       reset: () => reset(),
       getValues: () => getValues(),
-      isValid: isValid,
+      isValid,
     })
   );
+
+  // ✅ Responsive grid logic
+  const responsiveGridCols = isMobile
+    ? 1
+    : isTablet
+    ? formConfig.gridCols && formConfig.gridCols > 2
+      ? 2
+      : formConfig.gridCols || 1
+    : formConfig.gridCols || 1;
+
+  // ✅ Adjust fields’ colSpan (only if >2 and in tablet range)
+  const adjustedSections = formConfig.sections?.map((section) => ({
+    ...section,
+    fields: section.fields.map((field) => ({
+      ...field,
+      colSpan:
+        isTablet && field.colSpan && field.colSpan > 2 ? 2 : field.colSpan,
+    })),
+  }));
+
+  const adjustedFields =
+    !formConfig.sections && formConfig.fields
+      ? formConfig.fields.map((field) => ({
+          ...field,
+          colSpan:
+            isTablet && field.colSpan && field.colSpan > 2 ? 2 : field.colSpan,
+        }))
+      : [];
 
   const buttonContainerClass = formConfig.fullWidthButtons
     ? "space-y-4"
     : "flex flex-wrap gap-4";
 
   const layoutClass = requiredFormLayout ? "border rounded-lg" : "";
-
-  const responsiveGridCols = isMobile ? 1 : formConfig.gridCols || 1;
 
   return (
     <div className={`${className} flex flex-col space-y-6 h-auto`}>
@@ -117,25 +145,18 @@ export function DynamicForm<T extends FieldValues>({
                 <h2 className="text-2xl font-bold">{formConfig.title}</h2>
               )}
               {formConfig.description && (
-                <p className="text-sm text-gray-600">
-                  {formConfig.description}
-                </p>
+                <p className="text-sm text-gray-600">{formConfig.description}</p>
               )}
             </div>
           ))}
 
-        {formConfig.sections ? (
+        {adjustedSections ? (
           <div className="space-y-1">
-            {formConfig.sections.map((section, index) => (
+            {adjustedSections.map((section, index) => (
               <div key={index} className={`bg-white p-1 ${layoutClass}`}>
                 {section.title && (
                   <div className="flex justify-between items-center mb-4">
-                    <Typography
-                      variant={"text"}
-                      size="md"
-                      as="h6"
-                      weight={"bold"}
-                    >
+                    <Typography variant={"text"} size="md" as="h6" weight={"bold"}>
                       {section.title}
                     </Typography>
                     {section.collapsible && (
@@ -164,9 +185,7 @@ export function DynamicForm<T extends FieldValues>({
                   </div>
                 )}
                 {section.description && (
-                  <p className="text-sm text-gray-600 mb-4">
-                    {section.description}
-                  </p>
+                  <p className="text-sm text-gray-600 mb-4">{section.description}</p>
                 )}
                 {!section.collapsible || !collapsedSections.has(index)
                   ? renderFields<T>({
@@ -187,7 +206,7 @@ export function DynamicForm<T extends FieldValues>({
           </div>
         ) : (
           renderFields<T>({
-            fields: formConfig.fields || [],
+            fields: adjustedFields,
             control,
             errors,
             showErrors,
@@ -201,44 +220,42 @@ export function DynamicForm<T extends FieldValues>({
         )}
 
         {!externalSubmit && (
-          <>
-            <div className={`${buttonContainerClass}`}>
-              <Button
-                type="submit"
-                disabled={isSubmitting || loading || disabled}
-                variant="primary"
-                size="md"
-                className={formConfig.fullWidthButtons ? "w-full" : ""}
-              >
-                {isSubmitting || loading ? (
-                  <span className="flex items-center justify-center">
-                    <svg
-                      className="animate-spin -ml-1 mr-2 h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
-                    {loading ? "Processing..." : "Submitting..."}
-                  </span>
-                ) : (
-                  submitButtonText
-                )}
-              </Button>
-            </div>
-          </>
+          <div className={`${buttonContainerClass}`}>
+            <Button
+              type="submit"
+              disabled={isSubmitting || loading || disabled}
+              variant="primary"
+              size="md"
+              className={formConfig.fullWidthButtons ? "w-full" : ""}
+            >
+              {isSubmitting || loading ? (
+                <span className="flex items-center justify-center">
+                  <svg
+                    className="animate-spin -ml-1 mr-2 h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                  {loading ? "Processing..." : "Submitting..."}
+                </span>
+              ) : (
+                submitButtonText
+              )}
+            </Button>
+          </div>
         )}
       </form>
     </div>

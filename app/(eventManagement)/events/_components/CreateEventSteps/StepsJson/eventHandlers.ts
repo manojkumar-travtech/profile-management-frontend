@@ -1,6 +1,12 @@
 import { FormConfig } from "@/components/custom/Form";
 
-export const eventHandlersConfig: FormConfig<any> = {
+export interface EventHandlersFormFields {
+  company1: string;
+  clientCompany1: string;
+  invitesToCoordinators1: boolean;
+}
+
+export const eventHandlersConfig: FormConfig<EventHandlersFormFields> = {
   title: "",
   description: "",
   gridCols: 4,
@@ -10,7 +16,7 @@ export const eventHandlersConfig: FormConfig<any> = {
       collapsible: false,
       fields: [
         {
-          name: "company",
+          name: "company1",
           label: "Company",
           type: "select",
           placeholder: "Select Company",
@@ -23,7 +29,7 @@ export const eventHandlersConfig: FormConfig<any> = {
           colSpan: 4,
         },
         {
-          name: "clientCompany",
+          name: "clientCompany1",
           label: "Client Company",
           type: "select",
           options: [
@@ -36,7 +42,7 @@ export const eventHandlersConfig: FormConfig<any> = {
           colSpan: 4,
         },
         {
-          name: "invitesToCoordinators",
+          name: "invitesToCoordinators1",
           label: "Assign to all of your Coordinators",
           description:
             "All of your coordinators will be able to invite guests for this event",

@@ -1,4 +1,4 @@
-import { BarChart3, CreditCard, Send, Star, Users } from "lucide-react";
+import React from "react";
 
 export interface SubmenuItem {
   id: string;
@@ -9,103 +9,38 @@ export interface SubmenuItem {
 export interface MenuItem {
   id: string;
   title: string;
-  icon?: React.ComponentType<any>;
+  icon?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   path?: string;
   hasSubmenu?: boolean;
   submenu?: SubmenuItem[];
 }
 
-export interface SidebarProps {
+export type NavigateFn = (path: string) => void;
+export type ToggleFn = (itemId: string) => void;
+
+interface WithMenuItems {
+  MENU_ITEMS?: MenuItem[];
+}
+export interface SidebarProps extends WithMenuItems {
   children: React.ReactNode;
 }
 
-
-export interface MenuItemComponentProps {
+interface NavigateFunction {
+  onNavigate: NavigateFn;
+}
+export interface MenuItemComponentProps extends NavigateFunction {
   item: MenuItem;
   isOpen: boolean;
   isActive: boolean;
   pathname: string;
   isCollapsed: boolean;
-  onToggle: (itemId: string) => void;
-  onNavigate: (path: string) => void;
+  onToggle: ToggleFn;
 }
-
-export const MENU_ITEMS: MenuItem[] = [
-  { id: "events", title: "Events", icon: Star, path: "/events" },
-  {
-    id: "user-management",
-    title: "User Management",
-    icon: Users,
-    hasSubmenu: true,
-    submenu: [
-      { id: "create-user", title: "Create User", path: "/users/create" },
-      { id: "manage-users", title: "Manage Users", path: "/users/manage" },
-      { id: "user-roles", title: "User Roles", path: "/users/roles" },
-    ],
-  },
-  {
-    id: "credit-card",
-    title: "Credit Card",
-    icon: CreditCard,
-    hasSubmenu: true,
-    submenu: [
-      {
-        id: "transactions",
-        title: "Transactions",
-        path: "/credit-card/transactions",
-      },
-      {
-        id: "payment-methods",
-        title: "Payment Methods",
-        path: "/credit-card/methods",
-      },
-      {
-        id: "billing-history",
-        title: "Billing History",
-        path: "/credit-card/billing",
-      },
-    ],
-  },
-  {
-    id: "reports",
-    title: "Reports",
-    icon: BarChart3,
-    hasSubmenu: true,
-    submenu: [
-      {
-        id: "air-manifest",
-        title: "Air Manifest",
-        path: "/reports/air-manifest",
-      },
-      { id: "invitation", title: "Invitation", path: "/reports/invitation" },
-      {
-        id: "registration",
-        title: "Registration",
-        path: "/reports/registration",
-      },
-    ],
-  },
-  {
-    id: "requests",
-    title: "Requests",
-    icon: Send,
-    hasSubmenu: true,
-    submenu: [
-      {
-        id: "pending-requests",
-        title: "Pending Requests",
-        path: "/requests/pending",
-      },
-      {
-        id: "approved-requests",
-        title: "Approved Requests",
-        path: "/requests/approved",
-      },
-      {
-        id: "rejected-requests",
-        title: "Rejected Requests",
-        path: "/requests/rejected",
-      },
-    ],
-  },
-];
+export interface SidebarNavigationProps
+  extends WithMenuItems,
+    NavigateFunction {
+  pathname: string;
+  openSubmenu: string | null;
+  isCollapsed: boolean;
+  onToggleSubmenu: ToggleFn;
+}

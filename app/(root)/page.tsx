@@ -110,6 +110,7 @@ export default function Home() {
             6. Controlled Component
           </h2>
           <DragAndDropUploader
+            variant="compact"
             label="Controlled uploader"
             value={uploadedFiles}
             onFilesChange={(files) => console.log("📁 Files:", files)}

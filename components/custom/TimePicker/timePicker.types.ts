@@ -27,6 +27,4 @@ export interface TimeSelectProps {
   readOnly?: boolean;
   className?: string;
   timeConfig?: TimeFieldConfig;
-  hasError?: boolean;
-  errorMessage?:string
 }

@@ -1,12 +1,12 @@
 "use client";
 import { DynamicForm, DynamicFormRef } from "@/components/custom/Form";
 import React, { forwardRef } from "react";
-import { eventDetailsConfig } from "../StepsJson/eventDetails";
+import { eventDetailsConfig, EventDetailsFormFields } from "../StepsJson/eventDetails";
 import { FieldValues } from "react-hook-form";
 
-const EventDetails = forwardRef<DynamicFormRef<FieldValues>>((_, ref) => {
+const EventDetails = forwardRef<DynamicFormRef<EventDetailsFormFields>>((_, ref) => {
   return (
-    <DynamicForm
+    <DynamicForm<EventDetailsFormFields>
       ref={ref}
       formConfig={eventDetailsConfig}
       defaultValues={{}}

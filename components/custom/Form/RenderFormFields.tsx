@@ -364,10 +364,8 @@ export function RenderFormFields<T extends FieldValues>(
           placeholder={field.placeholder || "Select time"}
           disabled={isDisabled}
           readOnly={field.readonly}
-          hasError={hasError}
           timeConfig={field.timeConfig}
           className={commonProps.className}
-          errorMessage={fieldError?.message as string}
         />
       );
     case "custom":

@@ -6,8 +6,19 @@ const calenderConfig: CalendarFieldConfig = {
   maxDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   closeOnSelect: true,
 };
-
-export const eventDetailsConfig: FormConfig<any> = {
+export interface EventDetailsFormFields {
+  eventName: string;
+  eventStartDate: string;
+  eventEndDate: string;
+  startTime: string;
+  endTime: string;
+  venueName: string;
+  airportCode: string;
+  venueCompleteAddress: string;
+  aboutEvent: string;
+  eventName1:string
+}
+export const eventDetailsConfig: FormConfig<EventDetailsFormFields> = {
   title: "",
   description: "",
   gridCols: 4,
@@ -19,6 +30,13 @@ export const eventDetailsConfig: FormConfig<any> = {
         {
           name: "eventName",
           label: "Event Name",
+          type: "text",
+          placeholder: "Enter Event Name",
+          colSpan: 4,
+        },
+         {
+          name: "eventName1",
+          label: "Event Name1",
           type: "text",
           placeholder: "Enter Event Name",
           validation: { required: "Event Name is required", min: 3 },

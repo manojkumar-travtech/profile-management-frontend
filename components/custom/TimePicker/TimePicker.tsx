@@ -28,7 +28,6 @@ const TimePicker = forwardRef<HTMLButtonElement, TimeSelectProps>(
       readOnly = false,
       className = "",
       timeConfig = {},
-      hasError = false,
       ...props
     },
     ref
@@ -198,15 +197,13 @@ const TimePicker = forwardRef<HTMLButtonElement, TimeSelectProps>(
             ref={ref}
             disabled={disabled}
             className={cn(
-              "w-full justify-start text-left font-normal border rounded-md px-3 py-2 flex items-center",
-              hasError &&
-                "border-red-500 focus:border-red-500 focus:ring-red-500",
+              "w-full justify-start text-left font-normal border rounded-md px-3 py-2 flex items-center text-muted-foreground",
               readOnly && "bg-gray-50 cursor-default",
               className
             )}
             {...props}
           >
-            <Clock className="mr-2 h-4 w-4" />
+            <Clock className="mr-2 h-4 w-4 " />
             {formatDisplayTime()}
           </button>
         </PopoverTrigger>

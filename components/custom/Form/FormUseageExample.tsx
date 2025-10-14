@@ -23,7 +23,7 @@ export default function DemoFormPage() {
             type: "text",
             placeholder: "Enter your first name",
             validation: { required: "First name is required" },
-            rows: 2,
+            colSpan: 2,
           },
           {
             name: "lastName",
