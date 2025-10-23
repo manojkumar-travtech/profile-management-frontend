@@ -5,67 +5,15 @@ import { useRouter, usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { Header } from "../Header";
 import SidebarHeader from "./SidebarHeader";
-import { MenuItem, SidebarNavigationProps, SidebarProps } from "./MenuItems";
+import { SidebarProps } from "./MenuItems";
 import SidebarFooter from "./SidebarFooter";
-import MenuItemComponent from "./MenuItemComponent";
-
-// Constants
-const SIDEBAR_WIDTH_EXPANDED = "w-80";
-const SIDEBAR_WIDTH_COLLAPSED = "w-16";
-const SIDEBAR_WIDTH_MOBILE = "w-80";
-
-// Custom hooks
-const useActiveMenu = (pathname: string, MENU_ITEMS: MenuItem[]) => {
-  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
-
-  useEffect(() => {
-    const activeItem = MENU_ITEMS.find((item) =>
-      item.submenu?.some((submenuItem) => pathname.startsWith(submenuItem.path))
-    );
-
-    setOpenSubmenu(activeItem?.id || null);
-  }, [pathname]);
-
-  return { openSubmenu, setOpenSubmenu };
-};
-
-const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
-  pathname,
-  openSubmenu,
-  isCollapsed,
-  onToggleSubmenu,
-  onNavigate,
-  MENU_ITEMS,
-}) => (
-  <nav
-    className={`flex-1 py-4 transition-all duration-300 ${
-      isCollapsed ? "px-2" : "px-6"
-    }`}
-  >
-    <ul className="space-y-2">
-      {(MENU_ITEMS || []).map((item) => {
-        const isOpen = openSubmenu === item.id && !isCollapsed;
-        const isActive = item.path
-          ? pathname === item.path
-          : item.submenu?.some((sub) => pathname === sub.path) || false;
-
-        return (
-          <li key={item.id}>
-            <MenuItemComponent
-              item={item}
-              isOpen={isOpen}
-              isActive={isActive}
-              pathname={pathname}
-              isCollapsed={isCollapsed}
-              onToggle={onToggleSubmenu}
-              onNavigate={onNavigate}
-            />
-          </li>
-        );
-      })}
-    </ul>
-  </nav>
-);
+import {
+  SIDEBAR_WIDTH_COLLAPSED,
+  SIDEBAR_WIDTH_EXPANDED,
+  SIDEBAR_WIDTH_MOBILE,
+  useActiveMenu,
+} from "./sideBarHelpers";
+import SidebarNavigation from "./SidebarNavigation";
 
 const MobileMenuButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
   <button
@@ -98,7 +46,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, MENU_ITEMS }) => {
   const pathname = usePathname() || "/";
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
-  const { openSubmenu, setOpenSubmenu } = useActiveMenu(pathname, MENU_ITEMS || []);
+  const { openSubmenu, setOpenSubmenu } = useActiveMenu(
+    pathname,
+    MENU_ITEMS || []
+  );
 
   useEffect(() => {
     if (isCollapsed) setOpenSubmenu(null);
@@ -142,7 +93,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, MENU_ITEMS }) => {
         isCollapsed={isCollapsed}
         onToggleCollapse={handleToggleCollapse}
       />
-      
+
       <SidebarNavigation
         pathname={pathname}
         openSubmenu={openSubmenu}
@@ -203,7 +154,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, MENU_ITEMS }) => {
         className={`flex-1 ${mainMargin} transition-all duration-300 flex flex-col`}
       >
         <Header onMenuClick={handleOpenMobileMenu} />
-        <div className="flex-1 p-4 box-border">{children}</div>
+        <div className="flex-1 pt-20 px-8 box-border">{children}</div>
       </main>
     </div>
   );

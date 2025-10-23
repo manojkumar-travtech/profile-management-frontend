@@ -23,6 +23,16 @@ interface WithMenuItems {
 }
 export interface SidebarProps extends WithMenuItems {
   children: React.ReactNode;
+  renderNavigation?: (ctx: {
+    pathname: string;
+    openSubmenu: string | null;
+    isCollapsed: boolean;
+    isMobileMenuOpen: boolean;
+    onToggleSubmenu: (id: string) => void;
+    onNavigate: (path: string) => void;
+    onToggleCollapse: () => void;
+    onCloseMobileMenu: () => void;
+  }) => React.ReactNode;
 }
 
 interface NavigateFunction {
@@ -43,4 +53,10 @@ export interface SidebarNavigationProps
   openSubmenu: string | null;
   isCollapsed: boolean;
   onToggleSubmenu: ToggleFn;
+}
+
+export interface SidebarHeaderProps {
+  onClose: () => void;
+  isCollapsed: boolean;
+  onToggleCollapse: () => void;
 }

@@ -27,7 +27,7 @@ const AppsPopover: React.FC<AppsPopoverProps> = ({ handleAppClick, onMouseLeave 
 
   return (
     <div
-      className="absolute right-6 top-20 shadow-lg rounded-2xl border border-gray-200 p-4 sm:p-6 w-72 sm:w-80 z-50 bg-white"
+      className="fixed right-6 top-20 shadow-lg rounded-2xl border border-gray-200 p-4 sm:p-6 w-72 sm:w-80 z-50 bg-white"
       onMouseLeave={onMouseLeave}
     >
       <h3 className="text-sm font-semibold text-gray-800 mb-3 px-2">Quick Access</h3>

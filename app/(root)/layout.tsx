@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
 import { Sidebar } from "@/components/custom/Sidebar";
-import { Event_MENU_ITEMS } from "@/components/custom/Sidebar/appMenu";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,10 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Sidebar MENU_ITEMS={[]} > {children}</Sidebar>
-        {
-          children
-        }
+        <Sidebar> {children}</Sidebar>
       </body>
     </html>
   );

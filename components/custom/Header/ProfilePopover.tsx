@@ -48,7 +48,7 @@ const ProfilePopover: React.FC<{ onMouseLeave: () => void }> = ({ onMouseLeave }
       aria-label="User Profile"
       onMouseLeave={onMouseLeave}
       tabIndex={-1}
-      className="absolute right-6 top-20 w-72 rounded-2xl bg-white/90 backdrop-blur-md border border-gray-200 ring-1 ring-black/5 shadow-lg overflow-hidden z-50 transition-all"
+      className="fixed right-6 top-20 w-72 rounded-2xl bg-white/90 backdrop-blur-md border border-gray-200 ring-1 ring-black/5 shadow-lg overflow-hidden z-50 transition-all"
     >
       {/* Header section */}
       <div className="flex items-center gap-4 px-6 py-5 bg-gradient-to-br from-blue-600 to-purple-700">
