@@ -9,7 +9,7 @@ interface AppsPopoverProps {
 const apps: Array<{ id: number; name: string; icon: string; color: string; url: string }> = [
   { id: 1, name: "Event Management", icon: "📊", color: "bg-blue-500", url: "/events" },
   { id: 2, name: "Ero App", icon: "📈", color: "bg-purple-500", url: "/eroApp" },
-  { id: 3, name: "Messages", icon: "💬", color: "bg-green-500", url: "/messages" },
+  { id: 3, name: "Traveller Profile", icon: "🧳", color: "bg-green-500", url: "/traveler-profile" },
   { id: 4, name: "Calendar", icon: "📅", color: "bg-red-500", url: "/calendar" },
   { id: 5, name: "Tasks", icon: "✓", color: "bg-yellow-500", url: "/tasks" },
   { id: 6, name: "Files", icon: "📁", color: "bg-indigo-500", url: "/files" },
