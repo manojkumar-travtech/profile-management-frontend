@@ -1,8 +1,8 @@
 import { SectionCard } from "@/app/(travelerProfile)/_components/SectionCard";
 
 import { Calendar, Check, Plane, User } from "lucide-react";
-import InfoItem from "./InfoItem";
 import { SectionCardProps } from "@/app/(travelerProfile)/_types/profile.types";
+import InfoItem from "@/app/(travelerProfile)/_components/InfoItem";
 
 const ConfirmationHeader: React.FC<SectionCardProps> = ({ title }) => (
   <SectionCard

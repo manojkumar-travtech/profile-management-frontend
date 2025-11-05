@@ -1,8 +1,7 @@
 import { HotelBookingProps } from "@/app/(travelerProfile)/_types/upcomingTrips.types";
 import { Calendar, MapPin } from "lucide-react";
-import InfoItem from "./InfoItem";
 import { BookingLayout } from "./BookingLayout";
-import { Typography } from "@/components/custom/Typography";
+import InfoItem from "@/app/(travelerProfile)/_components/InfoItem";
 
 const HotelBooking: React.FC<HotelBookingProps> = ({ booking }) => (
   <BookingLayout
@@ -16,42 +15,25 @@ const HotelBooking: React.FC<HotelBookingProps> = ({ booking }) => (
       </>
     }
   >
-    {/* Details Section */}
+    {/* children section */}
     <div className="space-y-2 mb-3">
-      {/* Address */}
       <div className="flex items-start gap-1.5">
         <MapPin className="w-3.5 h-3.5 text-gray-500 flex-shrink-0 mt-0.5" />
-        <Typography
-          as="p"
-          size="xs"
-          color="#4B5563"
-          className="leading-relaxed"
-        >
+        <span className="text-xs text-gray-600 leading-relaxed">
           {booking.address}
-        </Typography>
+        </span>
       </div>
 
-      {/* Check-In */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 text-xs">
         <Calendar className="w-3.5 h-3.5 text-gray-500" />
-        <Typography as="span" size="xs" color="#4B5563">
-          Check In:
-        </Typography>
-        <Typography as="span" size="xs" weight="medium" color="#111827">
-          {booking.checkIn}
-        </Typography>
+        <span className="text-gray-600">Check In:</span>
+        <span className="text-gray-900">{booking.checkIn}</span>
       </div>
 
-      {/* Check-Out */}
-      <div className="flex items-center gap-2">
-        {/* Empty space for alignment */}
+      <div className="flex items-center gap-2 text-xs">
         <span className="w-3.5" />
-        <Typography as="span" size="xs" color="#4B5563">
-          Check Out:
-        </Typography>
-        <Typography as="span" size="xs" weight="medium" color="#111827">
-          {booking.checkOut}
-        </Typography>
+        <span className="text-gray-600">Check Out:</span>
+        <span className="text-gray-900">{booking.checkOut}</span>
       </div>
     </div>
   </BookingLayout>

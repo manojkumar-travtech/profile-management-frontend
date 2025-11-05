@@ -1,8 +1,8 @@
 import { CabBookingProps } from "@/app/(travelerProfile)/_types/upcomingTrips.types";
 import { Calendar, Car, MapPin } from "lucide-react";
-import InfoItem from "./InfoItem";
 import { BookingLayout } from "./BookingLayout";
 import { Typography } from "@/components/custom/Typography";
+import InfoItem from "@/app/(travelerProfile)/_components/InfoItem";
 
 const CabBooking: React.FC<CabBookingProps> = ({ booking }) => (
   <BookingLayout

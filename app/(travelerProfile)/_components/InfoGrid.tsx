@@ -23,7 +23,7 @@ export const InfoField: React.FC<InfoFieldProps> = ({
   className = "",
 }) => {
   return (
-    <div className={className}>
+    <div className={`flex flex-col gap-3 ${className}`}>
       <Typography className="text-gray-500">
         <span className="flex items-center gap-2">
           {Icon && <Icon className="w-3 h-3" />}

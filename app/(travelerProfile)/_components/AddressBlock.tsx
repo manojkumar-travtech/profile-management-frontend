@@ -1,6 +1,7 @@
-import React from 'react';
-import { Badge } from '@/components/ui/badge';
-import { LucideIcon } from 'lucide-react';
+import React from "react";
+import { Badge } from "@/components/ui/badge";
+import { LucideIcon } from "lucide-react";
+import { Typography } from "@/components/custom/Typography";
 
 export interface AddressBlockProps {
   type: string;
@@ -13,24 +14,33 @@ export const AddressBlock: React.FC<AddressBlockProps> = ({
   type,
   address,
   badge,
-  icon: Icon
+  icon: Icon,
 }) => {
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
-        <p className="text-xs text-gray-500 flex items-center gap-1">
-          {Icon && <Icon className="w-3 h-3" />}
-          {type}
-        </p>
+      <p className="text-xs text-gray-500 flex items-center gap-1 mb-1">
+        {Icon && <Icon className="w-3 h-3" />}
+        <Typography size="sm"> {type}</Typography>
+      </p>
+
+      <div className="flex items-center gap-2 flex-wrap">
+        <Typography
+          size="md"
+          weight="medium"
+          className={`${address ? "" : "text-gray-400"}`}
+        >
+          {address || "Not Set"}
+        </Typography>
+
         {badge && (
-          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 text-xs">
-            {badge}
+          <Badge
+            variant="secondary"
+            className="bg-amber-50 p-2 ml-2 rounded-md"
+          >
+            <Typography className="text-warning-600">{badge}</Typography>
           </Badge>
         )}
       </div>
-      <p className={`text-sm font-medium ${address ? 'text-gray-900' : 'text-gray-400'}`}>
-        {address || 'Not Set'}
-      </p>
     </div>
   );
 };

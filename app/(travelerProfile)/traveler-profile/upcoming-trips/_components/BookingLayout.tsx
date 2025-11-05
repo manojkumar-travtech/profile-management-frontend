@@ -24,7 +24,7 @@ export const BookingLayout: React.FC<BookingLayoutProps> = ({
   onDownload,
 }) => {
   return (
-    <SectionCard withBorder={false}>
+    <SectionCard withBorder={false} withExtraPadding={false}>
       <div className="flex gap-6">
         {image ? (
           <div className="w-55 h-auto flex-shrink-0">

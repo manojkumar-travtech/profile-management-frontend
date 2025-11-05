@@ -15,13 +15,13 @@ const TravelerMainPageLayout: React.FC<TravelerMainPageLayoutrProps> = ({
   children,
 }) => {
   return (
-    <div className={`max-w-6xl mx-auto pb-4 ${className}`}>
+    <div className={`max-w-6xl mx-auto px-4 pb-4 ${className}`}>
       <div
-        className={`flex flex-col items-center justify-center text-center`}
+        className={`flex flex-col items-center justify-center text-center gap-4`}
       >
         <Typography
           variant="display"
-          size="md"
+          size="sm"
           weight="bold"
           className="break-words w-full"
         >
@@ -30,15 +30,15 @@ const TravelerMainPageLayout: React.FC<TravelerMainPageLayoutrProps> = ({
         {subtitle && (
           <Typography
             variant="text"
-            size="md"
-            weight="medium"
-            className="break-words w-full mt-2"
+            size="sm"
+            weight="regular"
+            className="break-words w-full max-w-2xl mx-auto"
           >
             {subtitle}
           </Typography>
         )}
       </div>
-      {children && <div className="mt-4">{children}</div>}
+      {children && <div className="mt-8">{children}</div>}
     </div>
   );
 };

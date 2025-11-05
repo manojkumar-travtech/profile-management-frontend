@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { LucideIcon } from "lucide-react";
 import { Typography } from "@/components/custom/Typography";
+import { LinkButton } from "@/components/custom/CustomButtons";
 
 export interface DocumentItemProps {
   icon: LucideIcon;
@@ -50,15 +51,7 @@ export const DocumentItem: React.FC<DocumentItemProps> = ({
         )}
       </div>
 
-      {onEdit && (
-        <Button
-          variant="link"
-          className="text-blue-600 text-sm p-0 h-auto mr-2"
-          onClick={onEdit}
-        >
-          Edit
-        </Button>
-      )}
+      {onEdit && <LinkButton onClick={onEdit}>Edit</LinkButton>}
     </div>
   );
 };

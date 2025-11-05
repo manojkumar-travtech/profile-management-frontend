@@ -30,6 +30,8 @@ export function FormCalendar<T extends FieldValues>({
 }) {
   const [open, setOpen] = useState(false);
 
+  const calendarConfig = "calendar" in field ? field.calendar : undefined;
+
   const {
     datePreset,
     disabledDates,
@@ -38,7 +40,7 @@ export function FormCalendar<T extends FieldValues>({
     dateFormat = "PPP",
     allowClear = true,
     closeOnSelect = true,
-  } = field.calendar || {};
+  } = calendarConfig || {};
 
   const isDateDisabled = getDisabledDateFn({
     minDate,
@@ -86,6 +88,7 @@ export function FormCalendar<T extends FieldValues>({
         <Calendar
           mode="single"
           selected={value}
+          defaultMonth={value}
           onSelect={(date) => {
             onChange(date);
             if (closeOnSelect) setOpen(false);

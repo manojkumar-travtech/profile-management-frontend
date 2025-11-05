@@ -22,8 +22,8 @@ const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         {(MENU_ITEMS || []).map((item) => {
           const isOpen = openSubmenu === item.id && !isCollapsed;
           const isActive = item.path
-            ? pathname === item.path
-            : item.submenu?.some((sub) => pathname === sub.path) || false;
+            ? pathname.includes(item.path)
+            : item.submenu?.some((sub) => pathname.includes(sub.path)) || false;
 
           return (
             <li key={item.id}>

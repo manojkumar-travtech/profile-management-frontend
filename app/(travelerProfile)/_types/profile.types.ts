@@ -1,5 +1,5 @@
-import { LucideIcon } from 'lucide-react';
-import { ReactNode } from 'react';
+import { LucideIcon } from "lucide-react";
+import { ReactNode } from "react";
 
 export interface InfoFieldData {
   label: string;
@@ -31,15 +31,14 @@ export interface ProfileData {
   lastUpdate: string;
 }
 
-
 export interface SectionCardProps {
   title?: string;
-  description?: string;
+  description?: React.ReactNode;
   onEdit?: () => void;
   children?: ReactNode;
   actions?: ReactNode;
-  withBorder? : boolean,
-  withExtraPadding?:boolean,
+  withBorder?: boolean;
+  withExtraPadding?: boolean;
   leftIcon?: React.ReactNode;
-
+  className?: string;
 }

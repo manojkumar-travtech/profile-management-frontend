@@ -3,6 +3,7 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { InfoFieldProps, InfoGrid } from "./InfoGrid";
+import { Typography } from "@/components/custom/Typography";
 
 export interface ProfileHeaderProps {
   avatar?: string;
@@ -23,8 +24,8 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
   return (
     <>
-      <div className="flex flex-col items-start gap-3">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col items-start py-6">
+        <div className="flex items-center gap-6">
           <Avatar className="w-16 h-16 rounded-lg">
             <AvatarImage src={avatar} />
             <AvatarFallback className="bg-primary text-white text-xl rounded-b-full">
@@ -33,8 +34,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           </Avatar>
 
           <div>
-            <p className="font-medium text-gray-800">{name}</p>
-            <p className="text-sm text-gray-500">Profile Picture</p>
+            <Typography weight="bold">Profile Picture</Typography>
           </div>
         </div>
       </div>

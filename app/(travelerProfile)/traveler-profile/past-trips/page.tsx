@@ -48,9 +48,11 @@ const PastTravelApp: React.FC = () => {
       title="Past Travel"
       subtitle="Curious to understand your last completed travel. Enabling autocomplete for future bookings is more efficient."
     >
-      {trips.map((trip, i) => (
-        <PastTripCard key={i} {...trip} allowMultipleOpen={false}/>
-      ))}
+      <span className="space-y-4">
+        {trips.map((trip, i) => (
+          <PastTripCard key={i} {...trip} allowMultipleOpen={false} />
+        ))}
+      </span>
     </TravelerMainPageLayout>
   );
 };

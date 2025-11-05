@@ -2,7 +2,10 @@
 import React from "react";
 import { Trash, Pencil } from "lucide-react";
 import TravelerMainPageLayout from "../../_components/TravelerMainPageLayout";
-import { createDataTableColumns, DataTableColumn } from "@/components/custom/DataTable/DataTable.types";
+import {
+  createDataTableColumns,
+  DataTableColumn,
+} from "@/components/custom/DataTable/DataTable.types";
 import LoyaltySection from "./_components/LoyaltySection";
 import ActionsCell from "@/components/custom/ActionsCell";
 
@@ -122,43 +125,43 @@ const LoyaltyMemberships: React.FC = () => {
   const handleEdit = (item: LoyaltyItem) => console.log("Edit", item);
   const handleDelete = (item: LoyaltyItem) => console.log("Delete", item);
 
-const createColumns = (nameLabel: string): DataTableColumn<LoyaltyItem>[] => [
-  createDataTableColumns<LoyaltyItem>({
-    header: nameLabel,
-    accessorKey: "name",
-    searchable: true,
-    sortable: true,
-  }),
-  createDataTableColumns<LoyaltyItem>({
-    header: "Loyalty Number",
-    accessorKey: "loyaltyNumber",
-    searchable: true,
-    sortable: true,
-  }),
-  createDataTableColumns<LoyaltyItem>({
-    header: "Exp. Date",
-    accessorKey: "expDate",
-    sortable: true,
-  }),
-  createDataTableColumns<LoyaltyItem>({
-    header: "Actions",
-    accessorKey: "id",
-    cell: ({ row }) => (
-      <ActionsCell<LoyaltyItem>
-        row={row}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        onView={(item) => console.log("View", item)}
-        showEdit
-        showDelete
-        showView={false}
-        showMore={false}
-      />
-    ),
-  }),
-];
+  const createColumns = (nameLabel: string): DataTableColumn<LoyaltyItem>[] => [
+    createDataTableColumns<LoyaltyItem>({
+      header: nameLabel,
+      accessorKey: "name",
+      searchable: true,
+      sortable: true,
+    }),
+    createDataTableColumns<LoyaltyItem>({
+      header: "Loyalty Number",
+      accessorKey: "loyaltyNumber",
+      searchable: true,
+      sortable: true,
+    }),
+    createDataTableColumns<LoyaltyItem>({
+      header: "Exp. Date",
+      accessorKey: "expDate",
+      sortable: true,
+    }),
+    createDataTableColumns<LoyaltyItem>({
+      header: "Actions",
+      accessorKey: "id",
+      cell: ({ row }) => (
+        <ActionsCell<LoyaltyItem>
+          row={row}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onView={(item) => console.log("View", item)}
+          showEdit
+          showDelete
+          showView={false}
+          showMore={false}
+        />
+      ),
+    }),
+  ];
 
-
+  const handleAddMore = () => {};
   return (
     <TravelerMainPageLayout
       title="Loyalty & Memberships"
@@ -171,6 +174,7 @@ const createColumns = (nameLabel: string): DataTableColumn<LoyaltyItem>[] => [
             title={section.title}
             data={section.data}
             columns={createColumns(section.nameLabel)}
+            onAddMore={handleAddMore}
           />
         ))}
       </div>

@@ -3,6 +3,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { DocumentItem, DocumentItemProps } from "./DocumentItem";
+import { LinkButton } from "@/components/custom/CustomButtons";
 
 export interface DocumentListProps {
   documents: DocumentItemProps[];
@@ -21,9 +22,7 @@ export const DocumentList: React.FC<DocumentListProps> = ({
 
       {onAddMore && (
         <div className="flex justify-start">
-          <Button variant="link" onClick={onAddMore}>
-            Add More
-          </Button>
+          <LinkButton onClick={onAddMore}> Add More</LinkButton>
         </div>
       )}
     </div>

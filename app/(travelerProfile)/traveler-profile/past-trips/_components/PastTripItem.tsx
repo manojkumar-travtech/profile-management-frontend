@@ -13,7 +13,7 @@ const PastTripItem: React.FC<PastTripItemProps> = ({
 }) => {
   return (
     <AccordionItem value={value} className="border-b border-gray-100">
-      <AccordionTrigger className="hover:bg-gray-50 hover:no-underline px-4 py-4">
+      <AccordionTrigger className="hover:bg-gray-50 hover:no-underline px-4 py-4 cursor-pointer">
         <div className="flex items-center w-full relative">
           <div className="flex items-center gap-3">
             <Icon className="w-5 h-5 text-gray-600" />
@@ -22,10 +22,7 @@ const PastTripItem: React.FC<PastTripItemProps> = ({
 
           <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2 text-sm">
             <StatusBadge completed={completed} />
-            <Typography
-              className={completed ? "text-blue-600" : "text-gray-500"}
-              weight="medium"
-            >
+            <Typography className="text-fontcol-bodytext" weight="medium">
               {completed ? "Completed" : "Pending"}
             </Typography>
           </div>

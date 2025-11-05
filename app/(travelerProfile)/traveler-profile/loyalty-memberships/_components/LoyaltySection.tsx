@@ -4,6 +4,7 @@ import { SectionCardProps } from "@/app/(travelerProfile)/_types/profile.types";
 import DataTable from "@/components/custom/DataTable/DataTable";
 import { DataTableProps } from "@/components/custom/DataTable/DataTable.types";
 import { Button } from "@/components/ui/button";
+import { LinkButton } from "@/components/custom/CustomButtons";
 
 interface LoyaltySectionProps<T>
   extends Omit<SectionCardProps, "onEdit" | "actions">,
@@ -22,14 +23,11 @@ function LoyaltySection<T>({
       title={title}
       description={description}
       actions={
-        <Button
-          variant="link"
-          className="text-blue-600 text-sm p-0 h-auto"
-          onClick={onAddMore}
-          size="2xl"
-        >
-          Add More
-        </Button>
+        onAddMore ? (
+          <LinkButton onClick={onAddMore}>Add More</LinkButton>
+        ) : (
+          <></>
+        )
       }
     >
       <DataTable {...tableProps} withBorder={false} withExtraPadding={true} />

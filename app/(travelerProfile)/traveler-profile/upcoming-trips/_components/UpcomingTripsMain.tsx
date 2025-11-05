@@ -13,11 +13,11 @@ import { Typography } from "@/components/custom/Typography";
 
 const SectionHeader = ({ title }: SectionHeaderProps) => {
   return (
-    <>
+    <div className="mb-4">
       <Typography variant="display" size="xs" weight="bold">
         {title}
       </Typography>
-    </>
+    </div>
   );
 };
 
@@ -83,10 +83,9 @@ const UpcomingTripsMain = (): JSX.Element => {
       <ConfirmationHeader title="Booking Confirmed" />
       <>
         <SectionHeader title="Flight" />
-
         <Accordion type="single" collapsible className="space-y-4">
           {bookingData.flights.map((flight) => (
-            <FlightLeg key={flight.id}/>
+            <FlightLeg key={flight.id} />
           ))}
         </Accordion>
       </>
