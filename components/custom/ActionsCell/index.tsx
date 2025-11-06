@@ -33,34 +33,41 @@ function ActionsCell<T>({
 
   return (
     <div className="flex gap-2">
-      {showDelete && (
-        <button
-          onClick={(e) => handleClick(e, onDelete)}
-          className="p-1 hover:bg-gray-100 rounded transition-colors"
-        >
-          <Trash className="w-4 h-4 text-gray-600" />
-        </button>
-      )}
-      {showEdit && (
-        <button
-          onClick={(e) => handleClick(e, onEdit)}
-          className="p-1 hover:bg-gray-100 rounded transition-colors"
-        >
-          <Pencil className="w-4 h-4 text-gray-600" />
-        </button>
-      )}
       {showView && (
         <button
           onClick={(e) => handleClick(e, onView)}
-          className="p-1 hover:bg-gray-100 rounded transition-colors"
+          className="p-1 rounded transition-colors hover:bg-blue-50 cursor-pointer"
+          title="View"
         >
-          <Eye className="w-4 h-4 text-gray-600" />
+          <Eye className="w-4 h-4 text-blue-600" />
         </button>
       )}
+
+      {showEdit && (
+        <button
+          onClick={(e) => handleClick(e, onEdit)}
+          className="p-1 rounded transition-colors hover:bg-yellow-50 cursor-pointer"
+          title="Edit"
+        >
+          <Pencil className="w-4 h-4 text-yellow-600" />
+        </button>
+      )}
+
+      {showDelete && (
+        <button
+          onClick={(e) => handleClick(e, onDelete)}
+          className="p-1 rounded transition-colors hover:bg-red-50 cursor-pointer"
+          title="Delete"
+        >
+          <Trash className="w-4 h-4 text-red-600" />
+        </button>
+      )}
+
       {showMore && (
         <button
           onClick={(e) => handleClick(e, onMore)}
-          className="p-1 hover:bg-gray-100 rounded transition-colors"
+          className="p-1 rounded transition-colors hover:bg-gray-50 cursor-pointer"
+          title="More"
         >
           <MoreHorizontal className="w-4 h-4 text-gray-600" />
         </button>

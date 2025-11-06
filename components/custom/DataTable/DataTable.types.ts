@@ -24,6 +24,8 @@ export interface DataTableProps<T> {
   withBorder?: boolean;
   withExtraPadding?: boolean;
   isLoading?: boolean;
+  renderAboveTable?: React.ReactNode;
+
 }
 
 export const createDataTableColumns = <T>(

@@ -153,8 +153,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ children, MENU_ITEMS }) => {
       <main
         className={`flex-1 ${mainMargin} transition-all duration-300 flex flex-col`}
       >
-        <Header onMenuClick={handleOpenMobileMenu} />
-        <div className="flex-1 pt-20 box-border h-full bg-white">{children}</div>
+        {/* <Header onMenuClick={handleOpenMobileMenu} /> */}
+        <div className="flex-1 p-8 box-border h-full bg-white">{children}</div>
       </main>
     </div>
   );

@@ -98,7 +98,7 @@ interface BaseFormFieldProps<T extends FieldValues> {
 
 // Specific field type interfaces
 interface TextFieldProps<T extends FieldValues> extends BaseFormFieldProps<T> {
-  type: "text" | "email" | "password" | "tel" | "url" | "search";
+  type: "text" | "email" | "password" | "tel" | "url" | "search" | 'switch'
 }
 
 interface NumberFieldProps<T extends FieldValues> extends BaseFormFieldProps<T> {
@@ -238,4 +238,6 @@ export type DynamicFormRef<T extends FieldValues> = {
   reset: () => void;
   trigger?: (name?: string | string[]) => Promise<boolean>;
   isValid: boolean;
+  setValues: (values: Partial<T>) => void; 
+
 };

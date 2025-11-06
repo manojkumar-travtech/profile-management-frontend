@@ -4,6 +4,7 @@ import React, { useEffect, useImperativeHandle, useState } from "react";
 import {
   DefaultValues,
   FieldValues,
+  Path,
   SubmitErrorHandler,
   SubmitHandler,
   useForm,
@@ -32,7 +33,9 @@ export function DynamicForm<T extends FieldValues>({
   ref,
   onChange,
 }: DynamicFormProps<T>) {
-  const [collapsedSections, setCollapsedSections] = useState<Set<number>>(new Set());
+  const [collapsedSections, setCollapsedSections] = useState<Set<number>>(
+    new Set()
+  );
 
   // ✅ Use your existing hook twice for breakpoints
   const isMobile480 = useIsMobile(480);
@@ -49,6 +52,7 @@ export function DynamicForm<T extends FieldValues>({
     reset,
     watch,
     getValues,
+    setValue,
   } = useForm<T>({
     defaultValues: defaultValues as DefaultValues<T>,
     mode: "onChange",
@@ -95,6 +99,14 @@ export function DynamicForm<T extends FieldValues>({
       reset: () => reset(),
       getValues: () => getValues(),
       isValid,
+      setValues: (values: Partial<T>) => {
+        Object.entries(values).forEach(([key, value]) => {
+          setValue(key as Path<T>, value as T[Path<T>], {
+            shouldValidate: true,
+            shouldDirty: true,
+          });
+        });
+      },
     })
   );
 
@@ -145,7 +157,9 @@ export function DynamicForm<T extends FieldValues>({
                 <h2 className="text-2xl font-bold">{formConfig.title}</h2>
               )}
               {formConfig.description && (
-                <p className="text-sm text-gray-600">{formConfig.description}</p>
+                <p className="text-sm text-gray-600">
+                  {formConfig.description}
+                </p>
               )}
             </div>
           ))}
@@ -156,7 +170,12 @@ export function DynamicForm<T extends FieldValues>({
               <div key={index} className={`bg-white p-1 ${layoutClass}`}>
                 {section.title && (
                   <div className="flex justify-between items-center mb-4">
-                    <Typography variant={"text"} size="md" as="h6" weight={"bold"}>
+                    <Typography
+                      variant={"text"}
+                      size="md"
+                      as="h6"
+                      weight={"bold"}
+                    >
                       {section.title}
                     </Typography>
                     {section.collapsible && (
@@ -185,7 +204,9 @@ export function DynamicForm<T extends FieldValues>({
                   </div>
                 )}
                 {section.description && (
-                  <p className="text-sm text-gray-600 mb-4">{section.description}</p>
+                  <p className="text-sm text-gray-600 mb-4">
+                    {section.description}
+                  </p>
                 )}
                 {!section.collapsible || !collapsedSections.has(index)
                   ? renderFields<T>({

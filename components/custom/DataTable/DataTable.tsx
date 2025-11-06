@@ -35,6 +35,7 @@ function DataTable<T>({
   withBorder = true,
   withExtraPadding = false,
   isLoading = false,
+  renderAboveTable
 }: DataTableProps<T> & { groupBy?: (keyof T)[] }) {
   const normalizedColumns = useMemo(() => normalizeColumns(columns), [columns]);
 
@@ -323,7 +324,7 @@ function DataTable<T>({
           </div>
         </div>
       )}
-
+      {renderAboveTable}
       <div className={withBorder ? "rounded-sm border" : ""}>
         <Table>
           <TableHeader className="bg-primary-50">

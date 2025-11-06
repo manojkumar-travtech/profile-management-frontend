@@ -33,7 +33,7 @@ export const renderFields = <T extends FieldValues>({
   };
 
   return (
-    <div className={`grid ${getResponsiveGridColsClass()} gap-6`}>
+    <div className={`grid ${getResponsiveGridColsClass()} gap-4`}>
       {fields.map((field) => {
         // ---------- CONDITIONAL RENDERING ----------
         if (field.conditional && watch) {
@@ -51,7 +51,7 @@ export const renderFields = <T extends FieldValues>({
             )} ${field.className || ""}`}
             style={field.style}
           >
-            {field.type !== "checkbox" && field.type !== "radio" && (
+            {field.type !== "checkbox" && field.type !== "radio"  && field.type !== "switch" && (
               <Label htmlFor={field.name}>
                 {field.label}
                 {field.validation?.required && (

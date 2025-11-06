@@ -41,4 +41,5 @@ export interface SectionCardProps {
   withExtraPadding?: boolean;
   leftIcon?: React.ReactNode;
   className?: string;
+  rightSection?: React.ReactNode; // 👈 new prop
 }

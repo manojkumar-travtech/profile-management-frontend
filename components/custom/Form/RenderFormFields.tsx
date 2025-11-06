@@ -25,6 +25,7 @@ import { FormCalendar } from "../DatePicker/FormCalendar";
 import { FormDateRangeCalendar } from "../DatePicker/FormDateRangeCalendar";
 import { TimePicker } from "../TimePicker";
 import { DragAndDropUploader } from "../DragAndDropUploader";
+import { SwitchField } from "../SwitchField";
 
 export function RenderFormFields<T extends FieldValues>(
   field: FormFieldProps<T>,
@@ -368,7 +369,17 @@ export function RenderFormFields<T extends FieldValues>(
           className={commonProps.className}
         />
       );
-    case "custom":
+    case "switch":
+  return (
+    <SwitchField
+      label={field.label}
+      labelPosition={"right"}
+      checked={Boolean(value)}
+      disabled={isDisabled}
+      onChange={(checked) => onChange(checked as PathValue<T, Path<T>>)}
+    />
+  );
+      case "custom":
     default:
       return null;
   }

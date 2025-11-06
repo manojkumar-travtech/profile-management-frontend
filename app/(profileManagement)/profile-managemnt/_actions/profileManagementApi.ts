@@ -1,0 +1,90 @@
+"use server";
+
+import APIKit, { safeAPICaller } from "@/app/api/axios/apikit";
+
+const profileId = "0eac8501-caa9-48a8-8bee-b512d88fbb00";
+
+export async function getProfileById(profileId: string): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.get(`/profile/${profileId}`)
+    );
+    console.log("Profile data:", response.data);
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+
+// layalty programs
+export async function getlayaltyPrograms(): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.get(`/profile/${profileId}/loyalty`)
+    );
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+
+// travel documents
+
+export async function getTravelDocuments(): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.get(`/profile/${profileId}/documents`)
+    );
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+
+export async function addDocument(documentData: any): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.post(`/profile/${profileId}/documents`, documentData)
+    );
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+
+export async function updateDocument(
+  documentId: string,
+  data: any
+): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.put(`/profile/documents/${documentId}`, data)
+    );
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+
+export async function deleteDocument(documentId: string): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.delete(`/profile/documents/${documentId}`)
+    );
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+// delegate profiles
+export async function getDelegateProfiles(): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.get(`/profile/${profileId}/delegates`)
+    );
+    console.log("Delegate Profiles data:", response.data);
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}

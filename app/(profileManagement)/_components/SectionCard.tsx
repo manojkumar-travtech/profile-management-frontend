@@ -1,47 +1,50 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/custom/Typography";
 import { SectionCardProps } from "../_types/profile.types";
-import { LinkButton } from "@/components/custom/CustomButtons";
 
-export const SectionCard: React.FC<SectionCardProps> = ({
+export const SectionCard: React.FC<
+  Omit<SectionCardProps, "actions" | "onEdit">
+> = ({
   title,
   description,
-  onEdit,
   children,
-  actions,
   leftIcon,
+  rightSection, // 👈 new prop
   withBorder = true,
-  withExtraPadding = true,
-  className,
+  withExtraPadding = false,
+  className = "",
 }) => {
   return (
     <div
       className={`w-full ${
         withBorder ? "border border-gray-200" : ""
-      } rounded-sm ${withExtraPadding ? "p-6" : "p-0"} ${className}`}
+      } rounded-sm ${withExtraPadding ? "p-6" : "p-2"} ${className}`}
     >
       {/* Header */}
-      <div className="flex items-start justify-between mb-3">
+      <div className="flex items-center justify-between">
         {/* Left section (icon + text) */}
-        <div className="flex items-start gap-6 flex-1">
-          {/* Icon at the top, aligned with first line of text */}
-          {leftIcon && <div className="flex-shrink-0 pt-0.5">{leftIcon}</div>}
+        <div className="flex items-center gap-4 flex-1">
+          {leftIcon && (
+            <div className="flex items-center justify-center w-10 h-10 rounded-md bg-primary-400 text-white">
+              {leftIcon}
+            </div>
+          )}
 
           {/* Title + Description */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col justify-center">
             <Typography variant="text" weight="bold" size="lg" as="h5">
               {title}
             </Typography>
+
             {description &&
               (typeof description === "string" ? (
                 <Typography
                   variant="text"
                   weight="medium"
                   size="sm"
-                  className="text-fontcol-bodytext"
+                  className="text-fontcol-bodytext pt-1"
                 >
                   {description}
                 </Typography>
@@ -51,15 +54,14 @@ export const SectionCard: React.FC<SectionCardProps> = ({
           </div>
         </div>
 
-        {/* Right actions */}
-        <div className="flex items-center gap-2 flex-shrink-0">
-          {actions}
-          {onEdit && <LinkButton onClick={onEdit}>Edit</LinkButton>}
-        </div>
+        {/* Right section aligned to text (center vertically) */}
+        {rightSection && (
+          <div className="flex items-center ml-4">{rightSection}</div>
+        )}
       </div>
 
       {/* Body */}
-      <div className="w-full">{children}</div>
+      <div className="w-full mt-4">{children}</div>
     </div>
   );
 };

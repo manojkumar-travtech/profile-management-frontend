@@ -46,10 +46,6 @@ const Typography: React.FC<TypographyProps> = ({
 
   const fontSizeVar =
     variant === "display" ? `--text-display-${size}` : `--text-${size}`;
-  const lineHeightVar =
-    variant === "display"
-      ? `--text-display-${size}--line-height`
-      : `--text-${size}--line-height`;
   const letterSpacingVar =
     variant === "display"
       ? `--text-display-${size}--letter-spacing`
@@ -86,7 +82,6 @@ const Typography: React.FC<TypographyProps> = ({
       className={`font-['lato'] ${getResponsiveClasses()} ${className}`}
       style={{
         fontSize: responsive ? undefined : `var(${fontSizeVar}, inherit)`,
-        lineHeight: `var(${lineHeightVar}, normal)`,
         letterSpacing: letterSpacingVar
           ? `var(${letterSpacingVar}, normal)`
           : undefined,

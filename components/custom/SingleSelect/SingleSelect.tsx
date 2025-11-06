@@ -1,59 +1,70 @@
 "use client";
 
 import * as React from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
 import { Path, PathValue } from "react-hook-form";
 import { FormFieldOption } from "../Form/Formtypes.types";
+import { BaseDropdown } from "../MultiSelect/BaseDropdown";
 
-interface FormSelectProps<T> {
+interface SingleSelectDropdownProps<T> {
   value: PathValue<T, Path<T>> | null | undefined | string;
   onChange: (val: PathValue<T, Path<T>>) => void;
-  options: FormFieldOption[] | undefined;
+  options: FormFieldOption[];
   placeholder?: string;
   isDisabled?: boolean;
   hasError?: boolean;
+  className?: string;
 }
 
-const SingleSelect = <T,>({
+const SingleSelectDropdown = <T,>({
   value,
   onChange,
   options = [],
-  placeholder = "Select an option",
+  placeholder = "Select...",
   isDisabled,
   hasError,
-}: FormSelectProps<T>) => {
+  className,
+}: SingleSelectDropdownProps<T>) => {
+  const [open, setOpen] = React.useState(false);
+  const [search, setSearch] = React.useState("");
+
+  const filteredOptions = React.useMemo(() => {
+    return options.filter((opt) =>
+      opt.label.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search, options]);
+
+  const selectedOption = options.find(
+    (opt) => String(opt.value) === String(value)
+  );
+
+  const handleSelect = (val: string) => {
+    const opt = options.find((o) => String(o.value) === val);
+    if (opt) {
+      onChange(opt.value as PathValue<T, Path<T>>);
+      setOpen(false);
+    }
+  };
+
+  const isSelected = (val: string) => String(value) === val;
+
   return (
-    <Select
-      disabled={isDisabled}
-      value={value !== undefined && value !== null ? String(value) : ""}
-      onValueChange={(val) => onChange(val as PathValue<T, Path<T>>)}
-    >
-      <SelectTrigger className={cn(hasError && "border-error-500")}>
-        <SelectValue placeholder={placeholder} />
-      </SelectTrigger>
-      <SelectContent>
-        {options.map((option) => (
-          <SelectItem
-            key={String(option.value)}
-            value={String(option.value)}
-            disabled={option.disabled}
-          >
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <BaseDropdown
+      open={open}
+      onOpenChange={setOpen}
+      selectedLabels={selectedOption?.label || ""}
+      placeholder={placeholder}
+      options={filteredOptions}
+      onSelect={handleSelect}
+      isSelected={isSelected}
+      hasError={hasError}
+      isDisabled={isDisabled}
+      className={className}
+      searchValue={search}
+      onSearchChange={setSearch}
+    />
   );
 };
 
-// ✅ Explicitly cast to React.FC
-export default SingleSelect as <T>(
-  props: FormSelectProps<T>
-) => ReturnType<React.FC<FormSelectProps<T>>>;
+export default SingleSelectDropdown as <T>(
+  props: SingleSelectDropdownProps<T>
+) => ReturnType<React.FC<SingleSelectDropdownProps<T>>>;

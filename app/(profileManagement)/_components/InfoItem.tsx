@@ -1,6 +1,6 @@
-import { InfoItemProps } from "@/app/(travelerProfile)/_types/upcomingTrips.types";
 import { Typography } from "@/components/custom/Typography";
 import { Badge } from "@/components/ui/badge";
+import { InfoItemProps } from "../_types/upcomingTrips.types";
 
 const InfoItem: React.FC<InfoItemProps> = ({ icon: Icon, label, value }) => (
   <Badge variant={"secondary"} className="p-2 rounded-sm">
