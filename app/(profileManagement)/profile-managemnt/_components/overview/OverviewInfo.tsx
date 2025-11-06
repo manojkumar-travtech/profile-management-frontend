@@ -1,5 +1,6 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import {
   FileText,
   Star,
@@ -7,35 +8,60 @@ import {
   Shield,
   User,
   Settings,
+  CheckCircle,
+  Loader2,
+  AlertTriangle,
 } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
-import { CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import InfoCard from "@/app/(profileManagement)/_components/ProfileSectionCard";
 import Card from "@/app/(profileManagement)/_components/Card";
+import { ProfileOverviewResponse } from "../../_types/profileManagement";
+import { getCompleteProfileStats } from "../../_actions/profileManagementApi";
 
 export default function OverviewTab() {
-  const profileCompletion = 40;
+  const [data, setData] = useState<ProfileOverviewResponse["data"] | null>(
+    null
+  );
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchOverview = async () => {
+      try {
+        setLoading(true);
+        const res = await getCompleteProfileStats();
+        setData(res.data || {});
+      } catch (err: any) {
+        setError(err.message || "Something went wrong");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOverview();
+  }, []);
+
+  const profileCompletion = data?.completeness_score ?? 0;
 
   const summary = [
     {
       icon: <FileText className="text-primary" />,
-      number: 1,
+      number: data?.document_count ?? 0,
       title: "Documents",
     },
     {
       icon: <Star className="text-primary" />,
-      number: 2,
+      number: data?.loyalty_program_count ?? 0,
       title: "Loyalty Programs",
     },
     {
       icon: <CreditCard className="text-primary" />,
-      number: 0,
-      title: "Payment Methods",
+      number: data?.payment_method_count ?? 0,
+      title: "Payment Methods", // ✅ fixed label
     },
     {
       icon: <Shield className="text-primary" />,
-      number: 0,
+      number: data?.delegate_count ?? 0,
       title: "Delegations",
     },
   ];
@@ -45,7 +71,7 @@ export default function OverviewTab() {
       id: 1,
       icon: <User className="w-5 h-5 text-primary" />,
       title: "Personal Information",
-      progress: 38,
+      progress: 100,
       status: "Complete",
     },
     {
@@ -71,8 +97,26 @@ export default function OverviewTab() {
     },
   ];
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-40">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center gap-2 text-red-600 p-4 bg-red-50 rounded-md">
+        <AlertTriangle className="w-5 h-5" />
+        <span>{error}</span>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
+      {/* Profile Completion */}
       <Card className="bg-white">
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-base font-semibold">Profile Completion</h2>
@@ -90,7 +134,7 @@ export default function OverviewTab() {
         <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
             className={cn(
-              "h-full rounded-full",
+              "h-full rounded-full transition-all duration-300",
               profileCompletion < 50 ? "bg-red-500" : "bg-green-500"
             )}
             style={{ width: `${profileCompletion}%` }}
@@ -121,18 +165,22 @@ export default function OverviewTab() {
       </Card>
 
       {/* Recent Activity */}
-      <Card className="bg-white">
-        <h2 className="text-base font-semibold mb-4">Recent Activity</h2>
-        <div className="flex items-center gap-3 p-3 rounded-lg bg-green-50 border border-green-200">
-          <CheckCircle className="w-5 h-5 text-green-600" />
-          <div>
-            <p className="text-sm font-medium text-green-700">
-              Profile updated
-            </p>
-            <p className="text-xs text-gray-500">11/5/2025</p>
+      {data?.last_used_at && (
+        <Card className="bg-white">
+          <h2 className="text-base font-semibold mb-4">Recent Activity</h2>
+          <div className="flex items-center gap-3 p-3 rounded-lg bg-green-50 border border-green-200">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <div>
+              <p className="text-sm font-medium text-green-700">
+                Profile last used
+              </p>
+              <p className="text-xs text-gray-500">
+                {new Date(data.last_used_at).toLocaleString()}
+              </p>
+            </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      )}
     </div>
   );
 }

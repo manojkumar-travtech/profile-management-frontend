@@ -5,7 +5,7 @@ import { Sidebar } from "@/components/custom/Sidebar";
 import { TRAVELLER_MENU_ITEMS } from "@/components/custom/Sidebar/appMenu";
 
 const lato = Lato({
-  weight: ['300', '400', '700', '900'], // Choose the weights you need
+  weight: ["300", "400", "700", "900"], // Choose the weights you need
   subsets: ["latin"],
   variable: "--font-lato",
 });
@@ -22,10 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${lato.variable} antialiased`}
-      >
-        <Sidebar MENU_ITEMS={TRAVELLER_MENU_ITEMS}> {children}</Sidebar>
+      <body className={`${lato.variable} antialiased`}>
+        <div className="p-8">{children}</div>
+        {/* <Sidebar MENU_ITEMS={TRAVELLER_MENU_ITEMS}> {children}</Sidebar> */}
       </body>
     </html>
   );

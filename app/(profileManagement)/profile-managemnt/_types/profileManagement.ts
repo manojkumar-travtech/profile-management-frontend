@@ -98,3 +98,18 @@ export interface DelegateAccess {
   updated_at: string;
   revoked_at: string | null;
 }
+export interface ProfileOverviewResponse {
+  success: boolean;
+  data: {
+    profile_id: string;
+    document_count: number;
+    loyalty_program_count: number;
+    payment_method_count?: number; 
+    delegate_count: number;
+    total_points: number;
+    total_miles: number;
+    completeness_score: number;
+    usage_count: number;
+    last_used_at: string;
+  };
+}

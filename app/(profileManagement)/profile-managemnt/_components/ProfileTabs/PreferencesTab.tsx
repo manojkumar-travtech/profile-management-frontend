@@ -1,11 +1,8 @@
-import React from 'react'
+import React from "react";
+import PreparencesPage from "../preferences/PreparencesPage";
 
 const PreferencesTab = () => {
-  return (
-    <div>
-      <div className="p-6">This is the <b>Preferences</b> tab content.</div>
-    </div>
-  )
-}
+  return <PreparencesPage />;
+};
 
-export default PreferencesTab
+export default PreferencesTab;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   User,
@@ -12,7 +12,10 @@ import {
   UserCircle,
   Edit,
 } from "lucide-react";
-import { getProfileById } from "../../_actions/profileManagementApi";
+import {
+  getProfileById,
+  updateProfile,
+} from "../../_actions/profileManagementApi";
 import { personalInfoFormConfig } from "./personalInfoFormConfig";
 import { DrawerFormDialog } from "@/app/(profileManagement)/_components/DrawerFormDialog";
 import { PersonalInfoFieldGroup } from "./PersonalInfoFieldGroup";
@@ -25,6 +28,7 @@ export default function PersonalInformation() {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
   const getProfileDetails = async () => {
     try {
@@ -45,9 +49,16 @@ export default function PersonalInformation() {
   }, []);
 
   const handleSave = async (values: any) => {
-    console.log("Saving profile data:", values);
-    setOpen(false);
-    await getProfileDetails();
+    try {
+      setIsEditing(true);
+      await updateProfile(values);
+      setOpen(false);
+      setIsEditing(false);
+
+      await getProfileDetails();
+    } catch (error) {
+      setIsEditing(false);
+    }
   };
 
   if (loading) {
@@ -136,7 +147,7 @@ export default function PersonalInformation() {
           <UserCircle className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold">Personal Information</h2>
         </div>
-        <Button icon={<Edit/>} size="sm" onClick={() => setOpen(true)}>
+        <Button icon={<Edit />} size="sm" onClick={() => setOpen(true)}>
           Edit
         </Button>
       </div>
@@ -146,6 +157,7 @@ export default function PersonalInformation() {
       ))}
 
       <DrawerFormDialog
+        isLoading={isEditing}
         open={open}
         onOpenChange={setOpen}
         title="Edit Personal Information"

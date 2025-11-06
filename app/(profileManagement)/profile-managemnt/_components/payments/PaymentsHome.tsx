@@ -6,13 +6,15 @@ import { DrawerFormDialog } from "@/app/(profileManagement)/_components/DrawerFo
 import ProfileManagementMainPageLayout from "@/app/(profileManagement)/_components/ProfileManagementMainPageLayout";
 import { paymentFormConfig, PaymentFormFields } from "./paymentFormConfig";
 
+// --- Softer, lower-contrast gradients ---
 const gradients: Record<string, string> = {
-  visa: "from-blue-600 to-blue-800",
-  mastercard: "from-yellow-500 to-red-600",
-  amex: "from-cyan-500 to-indigo-600",
-  discover: "from-orange-400 to-amber-600",
-  unknown: "from-gray-500 to-gray-700",
+  visa: "from-blue-200 to-blue-400",
+  mastercard: "from-yellow-200 to-red-300",
+  amex: "from-cyan-200 to-indigo-300",
+  discover: "from-orange-200 to-amber-300",
+  unknown: "from-gray-200 to-gray-400",
 };
+
 
 // Combined brand detection and naming utility
 const getCardBrandInfo = (number: string) => {

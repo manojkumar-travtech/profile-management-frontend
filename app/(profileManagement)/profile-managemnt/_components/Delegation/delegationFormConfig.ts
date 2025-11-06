@@ -54,7 +54,7 @@ export const delegationConfig: FormConfig<DelegationFormValues> = {
         {
           name: "issuingCountry",
           label: "Issuing Country *",
-          type: "multiselect",
+          type: "select",
           options: countries,
           validation: { required: "Issuing country is required" },
           colSpan: 2,

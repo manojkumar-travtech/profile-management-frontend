@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Shield, Save } from "lucide-react";
+import { Shield, Save, MoveLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ProfileManagementMainPageLayout from "../../_components/ProfileManagementMainPageLayout";
 import { SettingsTabs } from "./SettingsTabs";
 import { ConfirmationModal } from "@/components/custom/ConfirmationModal";
 import { useUnsavedChangesGuard } from "./useUnsavedChangesGuard";
+import { useRouter } from "next/navigation";
 
 export default function ProfileSettings() {
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
@@ -37,16 +39,14 @@ export default function ProfileSettings() {
 
   // ✅ Track unsaved changes
   useEffect(() => {
-    const changed = JSON.stringify(settings) !== JSON.stringify(initialSettings);
+    const changed =
+      JSON.stringify(settings) !== JSON.stringify(initialSettings);
     setUnsavedChanges(changed);
   }, [settings, initialSettings]);
 
   // ✅ Hook for handling leave confirmation modal
-  const {
-    showUnsavedModal,
-    confirmLeave,
-    cancelLeave,
-  } = useUnsavedChangesGuard(unsavedChanges);
+  const { showUnsavedModal, confirmLeave, cancelLeave } =
+    useUnsavedChangesGuard(unsavedChanges);
 
   const handleChange = (key: string, value: any) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
@@ -66,11 +66,24 @@ export default function ProfileSettings() {
         title="Settings & Privacy"
         subtitle="Manage your privacy, notifications, and security preferences."
         rightSection={
-          !isEditing && (
-            <Button size="sm" onClick={() => setIsEditing(true)}>
-              <Shield className="w-4 h-4 mr-2" /> Edit Settings
+          <div className="flex items-center gap-2">
+            {/* Back Button */}
+            <Button
+              variant="secondary-gray"
+              onClick={() => router.back()}
+              className="flex items-center"
+            >
+              <MoveLeft className="w-4 h-4 mr-1" />
+              Back
             </Button>
-          )
+
+            {/* Edit Button (only if not editing) */}
+            {!isEditing && (
+              <Button size="sm" onClick={() => setIsEditing(true)}>
+                <Shield className="w-4 h-4 mr-2" /> Edit Settings
+              </Button>
+            )}
+          </div>
         }
       >
         <SettingsTabs

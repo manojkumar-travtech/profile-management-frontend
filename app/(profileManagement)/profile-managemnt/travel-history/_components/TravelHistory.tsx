@@ -1,6 +1,6 @@
 "use client";
 
-import { Clock } from "lucide-react";
+import { Clock, MoveLeft } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TravelOverview } from "./TravelOverview";
 import { TravelRecentTrips } from "./TravelRecentTrips";
@@ -11,8 +11,11 @@ import CustomTabs, {
   CustomTabItem,
 } from "@/components/custom/CustomTabs/CustomTabs";
 import ProfileManagementMainPageLayout from "@/app/(profileManagement)/_components/ProfileManagementMainPageLayout";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const TravelHistory = ({ profile }: TravelHistoryProps) => {
+  const router = useRouter();
   const travelStats = profile?.travelHistory || {
     totalTrips: 24,
     totalMiles: 145000,
@@ -37,7 +40,7 @@ const TravelHistory = ({ profile }: TravelHistoryProps) => {
   };
 
   const recentTrips = [
-      {
+    {
       id: "1",
       destination: "Tokyo, Japan",
       dates: "Mar 15-22, 2024",
@@ -45,7 +48,7 @@ const TravelHistory = ({ profile }: TravelHistoryProps) => {
       hotels: 3,
       cost: "$2,450",
       status: "Completed",
-      purpose: "Business"
+      purpose: "Business",
     },
     {
       id: "2",
@@ -55,7 +58,7 @@ const TravelHistory = ({ profile }: TravelHistoryProps) => {
       hotels: 2,
       cost: "$3,200",
       status: "Upcoming",
-      purpose: "Leisure"
+      purpose: "Leisure",
     },
     {
       id: "3",
@@ -65,7 +68,7 @@ const TravelHistory = ({ profile }: TravelHistoryProps) => {
       hotels: 1,
       cost: "$1,800",
       status: "Completed",
-      purpose: "Conference"
+      purpose: "Conference",
     },
     {
       id: "4",
@@ -75,8 +78,8 @@ const TravelHistory = ({ profile }: TravelHistoryProps) => {
       hotels: 2,
       cost: "$2,100",
       status: "Upcoming",
-      purpose: "Vacation"
-    }
+      purpose: "Vacation",
+    },
   ];
 
   const upcomingTrips = [
@@ -121,6 +124,16 @@ const TravelHistory = ({ profile }: TravelHistoryProps) => {
       <ProfileManagementMainPageLayout
         title="Travel History & Analytics"
         subtitle="View your travel patterns, statistics, and trip history"
+        rightSection={
+          <Button
+            variant="secondary-gray"
+            onClick={() => router.back()}
+            className="flex items-center"
+          >
+            <MoveLeft className="w-4 h-4 mr-1" />
+            Back
+          </Button>
+        }
       >
         <CustomTabs
           tabs={tabs}

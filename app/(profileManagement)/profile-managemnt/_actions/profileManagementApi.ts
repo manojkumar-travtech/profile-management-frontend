@@ -4,18 +4,38 @@ import APIKit, { safeAPICaller } from "@/app/api/axios/apikit";
 
 const profileId = "0eac8501-caa9-48a8-8bee-b512d88fbb00";
 
-export async function getProfileById(profileId: string): Promise<any> {
+//
+export async function getCompleteProfileStats() {
   try {
     const response: any = await safeAPICaller(
-      APIKit.get(`/profile/${profileId}`)
+      APIKit.get(`/profile/${profileId}/stats`)
     );
-    console.log("Profile data:", response.data);
     return response;
   } catch (err: any) {
     return { error: err.message ?? "Unexpected error" };
   }
 }
-
+// profile info
+export async function getProfileById(profileId: string): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.get(`/profile/${profileId}`)
+    );
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+export async function updateProfile(data: any): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.put(`/profile/${profileId}`, data)
+    );
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
 // layalty programs
 export async function getlayaltyPrograms(): Promise<any> {
   try {
