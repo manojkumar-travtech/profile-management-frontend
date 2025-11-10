@@ -5,29 +5,22 @@ export interface DelegationFormValues {
   fullname: string;
   email: string;
   issuingCountry: string;
-  viewTrips: boolean;
-  bookTrips: boolean;
-  modifyTrips: boolean;
-  cancelTrips: boolean;
+  can_view: boolean;
+  can_book: boolean;
+  can_edit: boolean;
+  can_delete: boolean;
   viewProfile: boolean;
   editProfile: boolean;
 }
 
-const switchFields: (keyof Pick<
-  DelegationFormValues,
-  | "viewTrips"
-  | "bookTrips"
-  | "modifyTrips"
-  | "cancelTrips"
-  | "viewProfile"
-  | "editProfile"
->)[] = [
-  "viewTrips",
-  "bookTrips",
-  "modifyTrips",
-  "cancelTrips",
-  "viewProfile",
-  "editProfile",
+// Define switch fields with custom labels
+const switchFields: { name: keyof DelegationFormValues; label: string }[] = [
+  { name: "can_view", label: "Can View Trips" },
+  { name: "can_book", label: "Can Book Trips" },
+  { name: "can_edit", label: "Can Modify Trips" },
+  { name: "can_delete", label: "Can Cancel Trips" },
+  { name: "viewProfile", label: "Can View Profile" },
+  { name: "editProfile", label: "Can Edit Profile" },
 ];
 
 export const delegationConfig: FormConfig<DelegationFormValues> = {
@@ -36,6 +29,7 @@ export const delegationConfig: FormConfig<DelegationFormValues> = {
   sections: [
     {
       collapsible: false,
+      
       fields: [
         {
           name: "fullname",
@@ -59,12 +53,9 @@ export const delegationConfig: FormConfig<DelegationFormValues> = {
           validation: { required: "Issuing country is required" },
           colSpan: 2,
         },
-        ...switchFields.map((name) => ({
-          name,
-          label:
-            name
-              .replace(/([A-Z])/g, " $1")
-              .replace(/^./, (s) => s.toUpperCase()), 
+        ...switchFields.map((field) => ({
+          name: field.name,
+          label: field.label,
           type: "switch" as const,
           colSpan: 1,
         })),

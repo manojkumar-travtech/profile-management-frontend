@@ -1,4 +1,8 @@
-import { calendarConfig, countries, documentTypes } from "../../_constants/constants";
+import {
+  calendarConfig,
+  countries,
+  documentTypes,
+} from "../../_constants/constants";
 import { DocumentData } from "./types";
 
 export const formConfig = {
@@ -42,7 +46,6 @@ export const formConfig = {
           label: "Expiry Date",
           type: "date",
           colSpan: 2,
-          calendar: calendarConfig,
         },
         {
           name: "notes",
@@ -74,7 +77,7 @@ export const defaultFormValues: DocumentData = {
   issuing_country: "",
   issue_date: undefined,
   expiry_date: undefined,
-  notes: '',
+  notes: "",
   frontSide: undefined,
   backSide: undefined,
 };

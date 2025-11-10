@@ -6,21 +6,18 @@ export interface PreferencesFormFields {
   seatPreference: string;
   mealPreference: string;
   specialAssistance: string;
-  frequentFlyerNumber: string;
 
   // Hotel
   preferredHotelChain: string;
   roomType: string;
   bedType: string;
   smokingPreference: string;
-  loyaltyProgramId: string;
 
   // Car
   carType: string;
   transmission: string;
   fuelType: string;
   gpsRequired: boolean;
-  preferredRentalCompany: string;
 }
 
 export const preferencesFormConfig: FormConfig<PreferencesFormFields> = {
@@ -65,12 +62,7 @@ export const preferencesFormConfig: FormConfig<PreferencesFormFields> = {
           label: "Special Assistance",
           type: "text",
           placeholder: "Wheelchair, visual aid, etc.",
-        },
-        {
-          name: "frequentFlyerNumber",
-          label: "Frequent Flyer Number",
-          type: "text",
-        },
+        }
       ],
     },
     {
@@ -111,12 +103,7 @@ export const preferencesFormConfig: FormConfig<PreferencesFormFields> = {
             { label: "Smoking", value: "smoking" },
             { label: "Non-Smoking", value: "non_smoking" },
           ],
-        },
-        {
-          name: "loyaltyProgramId",
-          label: "Hotel Loyalty Program ID",
-          type: "text",
-        },
+        }
       ],
     },
     {
@@ -158,13 +145,7 @@ export const preferencesFormConfig: FormConfig<PreferencesFormFields> = {
           name: "gpsRequired",
           label: "Need GPS?",
           type: "switch",
-        },
-        {
-          name: "preferredRentalCompany",
-          label: "Preferred Rental Company",
-          type: "text",
-          placeholder: "e.g. Hertz, Avis",
-        },
+        }
       ],
     },
   ],

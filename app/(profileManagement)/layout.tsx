@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "../globals.css";
-import { Sidebar } from "@/components/custom/Sidebar";
-import { TRAVELLER_MENU_ITEMS } from "@/components/custom/Sidebar/appMenu";
 
 const lato = Lato({
   weight: ["300", "400", "700", "900"], // Choose the weights you need
@@ -24,7 +22,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${lato.variable} antialiased`}>
         <div className="p-8">{children}</div>
-        {/* <Sidebar MENU_ITEMS={TRAVELLER_MENU_ITEMS}> {children}</Sidebar> */}
       </body>
     </html>
   );

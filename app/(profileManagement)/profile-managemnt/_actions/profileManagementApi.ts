@@ -37,6 +37,32 @@ export async function updateProfile(data: any): Promise<any> {
   }
 }
 // layalty programs
+
+export async function addLoyaltyProgram(loyaltyData: any): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.post(`/profile/${profileId}/loyalty`, loyaltyData)
+    );
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+
+export async function updateLoyaltyProgram(
+  loyaltyId: string | number,
+  data: any
+): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.put(`/loyalty/${loyaltyId}`, data)
+    );
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+
 export async function getlayaltyPrograms(): Promise<any> {
   try {
     const response: any = await safeAPICaller(
@@ -103,6 +129,19 @@ export async function getDelegateProfiles(): Promise<any> {
       APIKit.get(`/profile/${profileId}/delegates`)
     );
     console.log("Delegate Profiles data:", response.data);
+    return response;
+  } catch (err: any) {
+    return { error: err.message ?? "Unexpected error" };
+  }
+}
+
+// preferences
+
+export async function getPreferences(): Promise<any> {
+  try {
+    const response: any = await safeAPICaller(
+      APIKit.get(`/profile/${profileId}/preferences`)
+    );
     return response;
   } catch (err: any) {
     return { error: err.message ?? "Unexpected error" };

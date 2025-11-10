@@ -45,6 +45,7 @@ export default function AddProgramButton({
               { label: "Airline", value: "airline" },
               { label: "Hotel", value: "hotel" },
               { label: "Car Rental", value: "car_rental" },
+              { label: "Other", value: "other" },
             ],
             validation: { required: "Provider type is required" },
           },
@@ -54,13 +55,6 @@ export default function AddProgramButton({
             type: "text",
             placeholder: "e.g., United Airlines",
             validation: { required: "Provider name is required" },
-          },
-          {
-            name: "program_name",
-            label: "Program Name",
-            type: "text",
-            placeholder: "e.g., MileagePlus",
-            validation: { required: "Program name is required" },
           },
           {
             name: "member_number",
@@ -80,23 +74,6 @@ export default function AddProgramButton({
               { label: "Diamond", value: "Diamond" },
             ],
             validation: { required: "Tier status is required" },
-          },
-          {
-            name: "points_balance",
-            label: "Points Balance",
-            type: "number",
-            placeholder: "e.g., 50000",
-          },
-          {
-            name: "miles_balance",
-            label: "Miles Balance",
-            type: "number",
-            placeholder: "e.g., 125000",
-          },
-          {
-            name: "member_since",
-            label: "Member Since",
-            type: "date",
           },
           {
             name: "tier_expiry_date",
@@ -138,38 +115,16 @@ export default function AddProgramButton({
 
   const handleSubmit = (data: Record<string, any>) => {
     if (isEditMode && editingProgram) {
-      const updatedProgram: LoyaltyProgram = { ...editingProgram, ...data };
+      const updatedProgram: any = { ...data };
       onUpdate?.(updatedProgram);
     } else {
-      const newProgram: LoyaltyProgram = {
-        id: crypto.randomUUID(),
-        profile_id: "",
+      const newProgram: any = {
         provider_type: data.provider_type,
         provider_name: data.provider_name,
         program_name: data.program_name,
         member_number: data.member_number,
         tier_status: data.tier_status,
-        points_balance: data.points_balance ?? 0,
-        miles_balance: data.miles_balance ?? 0,
-        member_since: data.member_since || null,
         tier_expiry_date: data.tier_expiry_date || null,
-        // default placeholders for remaining fields
-        provider_code: "",
-        member_name: "",
-        tier_level: null,
-        segment_count: null,
-        points_expiry_date: null,
-        is_primary: false,
-        auto_apply: false,
-        login_username: null,
-        login_password_encrypted: null,
-        program_data: {},
-        last_synced_at: null,
-        sync_enabled: null,
-        notes: null,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        deleted_at: null,
       };
       onAdd?.(newProgram);
     }
@@ -184,16 +139,21 @@ export default function AddProgramButton({
 
   return (
     <>
-      <Button onClick={() => setDrawerOpen(true)} className="flex items-center gap-2">
+      <Button
+        onClick={() => setDrawerOpen(true)}
+        className="flex items-center gap-2"
+      >
         <Plus className="w-4 h-4" />
-        Add Program
+        Add Loyalty
       </Button>
 
       <DrawerFormDialog
         open={drawerOpen}
         onOpenChange={(open) => !open && handleClose()}
-        title={isEditMode ? "Edit Loyalty Program" : "Add Loyalty Program"}
-        subtitle={isEditMode ? "Update program details" : "Fill in program details"}
+        title={isEditMode ? "Edit Loyalty" : "Add Loyalty"}
+        subtitle={
+          isEditMode ? "Update program details" : "Fill in program details"
+        }
         formConfig={formConfig}
         defaultValues={getDefaultValues()}
         onSubmit={handleSubmit}
