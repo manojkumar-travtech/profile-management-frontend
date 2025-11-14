@@ -26,6 +26,7 @@ const buttonVariants = cva(
           "text-gray-600 underline-offset-4 hover:underline hover:text-gray-900 bg-transparent border-transparent p-0 h-auto",
         destructive:
           "bg-error-600 text-white shadow-md hover:bg-error-700 focus-visible:ring-error-100 border border-error-700",
+          outline:''
       },
       size: {
         sm: "h-9 px-3 rounded-md gap-2 text-sm",

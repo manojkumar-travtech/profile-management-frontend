@@ -1,23 +1,25 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
-import "../globals.css";
+import "../../globals.css";
 import { AppSideBar } from "@/components/layout/Sidebar";
 import { AppHeader } from "@/components/layout/Header";
-import { sidebarConfig } from "@/components/layout/Sidebar/sidebarConfig";
-import AlertsSection from "./profile-managemnt/_components/AlertsSection";
+import { portalManagementConfig } from "@/components/layout/Sidebar/portalManagementConfig";
 
 const lato = Lato({
-  weight: ["300", "400", "700", "900"], 
+  weight: ["100", "300", "400", "700", "900"],
   subsets: ["latin"],
   variable: "--font-lato",
 });
 
 export const metadata: Metadata = {
-  title: "Traveler Profile",
-  description: "Manage Your Profiles Here",
+  title: "Portal Management",
+  description: "Manage your portal content and settings",
+  icons: {
+    icon: "/logo/omegalogo.svg",
+  },
 };
 
-export default function ProfileManagementLayout({
+export default function PortalManagementLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -26,9 +28,9 @@ export default function ProfileManagementLayout({
     <html lang="en">
       <body className={`${lato.variable} antialiased`}>
         <div className="flex h-screen overflow-hidden">
-          <AppSideBar menuItems={sidebarConfig.menuItems} />
+          <AppSideBar menuItems={portalManagementConfig.menuItems} />
           <div className="flex-1 flex flex-col overflow-hidden">
-            <AppHeader alertsSection={<AlertsSection/>} />
+            <AppHeader/>
             <main className="flex-1 overflow-y-auto bg-gray-50 p-4">
               {children}
             </main>

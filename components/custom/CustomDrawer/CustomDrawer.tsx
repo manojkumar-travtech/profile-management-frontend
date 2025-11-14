@@ -1,63 +1,71 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Drawer as DrawerPrimitive } from "vaul"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import React, { ReactNode } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 interface CustomDrawerProps {
-  trigger: React.ReactNode
-  title?: string
-  description?: string
-  footerButtons?: React.ReactNode
-  children?: React.ReactNode
-  direction?: "left" | "right" | "top" | "bottom"
-  showClose?: boolean
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title?: string | ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+  width?: string;
+  position?: "right" | "left";
 }
 
-export function CustomDrawer({
-  trigger,
+const CustomDrawer: React.FC<CustomDrawerProps> = ({
+  open,
+  onOpenChange,
   title,
-  description,
-  footerButtons,
   children,
-  direction = "right",
-  showClose = true,
-}: CustomDrawerProps) {
-  // Define direction-based classes
-  const directionClass = {
-    top: "inset-x-0 top-0 max-h-[80vh] rounded-b-lg border-b",
-    bottom: "inset-x-0 bottom-0 max-h-[80vh] rounded-t-lg border-t",
-    right: "inset-y-0 right-0 w-3/4 sm:max-w-sm border-l",
-    left: "inset-y-0 left-0 w-3/4 sm:max-w-sm border-r",
-  }[direction]
+  footer,
+  width = "500px",
+  position = "right",
+}) => {
+  const drawerPosition =
+    position === "right"
+      ? { right: 0, left: "auto" }
+      : { left: 0, right: "auto" };
+
+  const drawerStyles: React.CSSProperties & { [key: string]: any } = {
+    ...drawerPosition,
+    "--drawer-width": width, // ✅ custom CSS variable allowed
+  };
 
   return (
-    <DrawerPrimitive.Root>
-      <DrawerPrimitive.Trigger asChild>{trigger}</DrawerPrimitive.Trigger>
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+      <Dialog.Portal>
+        {/* Overlay */}
+        <Dialog.Overlay className="fixed inset-0 bg-black/30 z-50" />
 
-      <DrawerPrimitive.Portal>
-        <DrawerPrimitive.Overlay className="fixed inset-0 bg-black/50 z-50 data-[state=open]:animate-in data-[state=closed]:animate-out" />
-        <DrawerPrimitive.Content
+        {/* Drawer */}
+        <Dialog.Content
+          className={`fixed top-0 h-full bg-white shadow-lg flex flex-col overflow-hidden z-50 
+                      w-full sm:w-[var(--drawer-width)] transition-transform duration-300`}
+          style={drawerStyles}
         >
-          {showClose && (
-            <DrawerPrimitive.Close className="absolute top-4 right-4 text-foreground font-bold text-lg">
-              ✕
-            </DrawerPrimitive.Close>
-          )}
-
-          {(title || description) && (
-            <div className="p-4 flex flex-col gap-1.5">
-              {title && <h3 className="text-foreground font-semibold">{title}</h3>}
-              {description && <p className="text-muted-foreground text-sm">{description}</p>}
+          {/* Header */}
+          {title && (
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <DialogTitle className="text-lg font-semibold text-gray-900">
+                {title}
+              </DialogTitle>
+              <Dialog.Close className="text-gray-400 hover:text-gray-600 cursor-pointer text-xl">
+                ✕
+              </Dialog.Close>
             </div>
           )}
 
-          <div className="p-4 flex-1">{children}</div>
+          {/* Body */}
+          <div className="flex-1 overflow-y-auto p-6 relative">{children}</div>
 
-          {footerButtons && <div className="p-4 flex gap-2">{footerButtons}</div>}
-        </DrawerPrimitive.Content>
-      </DrawerPrimitive.Portal>
-    </DrawerPrimitive.Root>
-  )
-}
+          {/* Footer */}
+          {footer && <div className="border-t border-gray-200 p-1">{footer}</div>}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+};
+
+export default CustomDrawer;

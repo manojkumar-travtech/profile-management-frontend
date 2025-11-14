@@ -58,6 +58,18 @@ export function DynamicForm<T extends FieldValues>({
     mode: "onChange",
   });
 
+  useEffect(() => {
+    if (!defaultValues) return;
+
+    const currentValues = getValues();
+    const isDifferent =
+      JSON.stringify(currentValues) !== JSON.stringify(defaultValues);
+
+    if (isDifferent) {
+      reset(defaultValues as DefaultValues<T>);
+    }
+  }, [defaultValues, reset, getValues]);
+
   const toggleSection = (index: number) => {
     const newCollapsed = new Set(collapsedSections);
     if (newCollapsed.has(index)) newCollapsed.delete(index);

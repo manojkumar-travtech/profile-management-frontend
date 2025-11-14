@@ -29,7 +29,7 @@ const SingleSelectDropdown = <T,>({
 
   const filteredOptions = React.useMemo(() => {
     return options.filter((opt) =>
-      opt.label.toLowerCase().includes(search.toLowerCase())
+      opt.label?.toLowerCase().includes(search.toLowerCase())
     );
   }, [search, options]);
 
